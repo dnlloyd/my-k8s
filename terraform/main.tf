@@ -4,7 +4,7 @@ locals {
   vpc_id = "vpc-065b33a8baa73e2a3"
   instance_type = "t3.medium"
   ec2_key_pair_name = "fh-sandbox"
-  disk_size = 20
+  disk_size = 40
 
   subnet_ids = [
     "subnet-08090a8df7f3a8c63",
@@ -41,6 +41,14 @@ locals {
       to_port                       = 65535
       type                          = "ingress"
       source_cluster_security_group = true
+    }
+    ingress_ssh = {
+      description = "Node ssh ingress"
+      protocol    = "tcp"
+      from_port   = 22
+      to_port     = 22
+      type        = "ingress"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
 }
@@ -115,8 +123,34 @@ module "eks" {
   eks_managed_node_groups = {
     default_node_group = {
       name = "${local.cluster_name}-managed"
-      create_launch_template = false
-      launch_template_name = ""
+
+      ############### Launch template ###############
+      # create_launch_template = false
+      # launch_template_name = ""
+      create_launch_template = true
+      launch_template_name = "${local.cluster_name}-lc"
+
+      key_name = local.ec2_key_pair_name
+
+      ebs_optimized = true
+
+      block_device_mappings = {
+        xvda = {
+          device_name = "/dev/xvda"
+
+          ebs = {
+            volume_size = local.disk_size # Todo: Which will win, this or disk_size
+            volume_type = "gp3"
+            encrypted   = true
+          }
+        }
+      }
+
+      # Incompatible with using a launch template
+      # remote_access = {
+      #   ec2_ssh_key = local.ec2_key_pair_name
+      #   source_security_group_ids = ["sg-0d085d64e2390eacd"]
+      # }
 
       subnet_ids = local.subnet_ids
 
@@ -126,14 +160,7 @@ module "eks" {
 
       instance_types = [local.instance_type]
       capacity_type = "SPOT"
-      disk_size = local.disk_size
-
-      # TODO: Enable EBS volume encryption by using custom launch template
-
-      remote_access = {
-        ec2_ssh_key = local.ec2_key_pair_name
-        source_security_group_ids = ["sg-0d085d64e2390eacd"]
-      }
+      # disk_size = local.disk_size # Todo: this gets trumped by volume_size in LC
 
       # Specify volumes to attach to the instance besides the volumes specified by the AMI
       # block_device_mappings = local.node_block_device # Todo: This requires a custom launch template
