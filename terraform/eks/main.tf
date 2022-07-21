@@ -216,12 +216,6 @@ resource "aws_kms_key" "eks" {
   }
 }
 
-# Todo: migrate to ../ecr
-resource "aws_ecr_repository" "dnlloyd" {
-  name = "dnlloyd"
-  image_tag_mutability = "MUTABLE"
-}
-
 # resource "aws_launch_template" "custom" {
 #   name_prefix            = "custom"
 #   description            = "EKS managed node group custom launch template"
