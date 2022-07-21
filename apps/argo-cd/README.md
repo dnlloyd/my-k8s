@@ -57,3 +57,12 @@ argocd app create www \
 --dest-server https://kubernetes.default.svc \
 --dest-namespace www
 ```
+
+## Reference
+
+https://argo-cd.readthedocs.io/en/stable/getting_started/
+
+https://argocd-image-updater.readthedocs.io/en/stable/
+
+https://www.linkedin.com/pulse/automatic-image-update-using-argocd-satyam-kumar?trk=articles_directory
+
