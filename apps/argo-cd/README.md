@@ -38,7 +38,7 @@ argocd account update-password
 kubectl create namespace www
 ```
 
-create secret for ECR
+Create secret for ECR
 
 ```
 kubectl create secret docker-registry regcred \
