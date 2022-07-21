@@ -1,9 +1,10 @@
-name: Deploy to ECR
+name: July 4th web Docker image build and push to ECR
 
 on:
- 
   push:
     branches: [ master ]
+    paths:
+      - 'docker/web-j4/**'
 
 jobs:
   
@@ -33,7 +34,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: dnlloyd
-        IMAGE_TAG: web_nginx
+        IMAGE_TAG: latest
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./docker/web-nginx
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./docker/web-j4
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
