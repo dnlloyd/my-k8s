@@ -205,7 +205,6 @@ module "eks" {
   }
 }
 
-
 # KMS key for secret envelope encryption
 resource "aws_kms_key" "eks" {
   description = "EKS Secret Encryption Key for ${local.cluster_name}"
@@ -217,6 +216,7 @@ resource "aws_kms_key" "eks" {
   }
 }
 
+# Todo: migrate to ../ecr
 resource "aws_ecr_repository" "dnlloyd" {
   name = "dnlloyd"
   image_tag_mutability = "MUTABLE"
