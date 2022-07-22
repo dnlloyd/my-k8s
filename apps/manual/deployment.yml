@@ -2,13 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: web
-  name: web
+    run: web-j4
+  name: web-j4
+  namespace: www
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      run: web
+      run: web-j4
   minReadySeconds: 5
   strategy:
     rollingUpdate:
@@ -18,8 +19,13 @@ spec:
   template:
     metadata:
       labels:
-        run: web
+        run: web-j4
     spec:
       containers:
-      - image: nginx:1.12
-        name: nginx
+      - image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/web-j4:0.1.0
+        name: web-j4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: regcred
