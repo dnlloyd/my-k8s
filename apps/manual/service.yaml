@@ -1,7 +1,7 @@
 apiVersion: v1	
 kind: Service	
 metadata:	
-  name: web-skp
+  name: web-j4
   namespace: www
 spec:
   type: LoadBalancer
@@ -9,4 +9,4 @@ spec:
   - port: 80	
     targetPort: 80	
   selector:	
-    run: web-skp
+    run: web-j4

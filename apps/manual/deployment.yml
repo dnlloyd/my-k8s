@@ -2,14 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: web-j4
-  name: web-j4
+    run: web-skp
+  name: web-skp
   namespace: www
 spec:
   replicas: 2
   selector:
     matchLabels:
-      run: web-j4
+      run: web-skp
   minReadySeconds: 5
   strategy:
     rollingUpdate:
@@ -19,11 +19,11 @@ spec:
   template:
     metadata:
       labels:
-        run: web-j4
+        run: web-skp
     spec:
       containers:
-      - image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/web-j4:0.1.0
-        name: web-j4
+      - image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp:0.1.0
+        name: web-skp
         imagePullPolicy: Always
         ports:
         - containerPort: 80
