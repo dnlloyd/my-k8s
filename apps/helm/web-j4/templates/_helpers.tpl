@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "www2.name" -}}
+{{- define "web-j4.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "www2.fullname" -}}
+{{- define "web-j4.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "www2.chart" -}}
+{{- define "web-j4.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "www2.labels" -}}
-helm.sh/chart: {{ include "www2.chart" . }}
-{{ include "www2.selectorLabels" . }}
+{{- define "web-j4.labels" -}}
+helm.sh/chart: {{ include "web-j4.chart" . }}
+{{ include "web-j4.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "www2.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "www2.name" . }}
+{{- define "web-j4.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "web-j4.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "www2.serviceAccountName" -}}
+{{- define "web-j4.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "www2.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "web-j4.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

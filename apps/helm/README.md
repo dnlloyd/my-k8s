@@ -2,5 +2,7 @@ https://helm.sh/docs/intro/install/
 
 brew install helm
 
-helm create www2
+helm create web-j4
+
+helm install web-j4 ./web-j4
 

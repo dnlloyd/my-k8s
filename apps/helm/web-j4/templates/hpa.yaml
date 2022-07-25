@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "www2.fullname" . }}
+  name: {{ include "web-j4.fullname" . }}
   labels:
-    {{- include "www2.labels" . | nindent 4 }}
+    {{- include "web-j4.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "www2.fullname" . }}
+    name: {{ include "web-j4.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

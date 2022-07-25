@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "www2.fullname" . }}-test-connection"
+  name: "{{ include "web-j4.fullname" . }}-test-connection"
   labels:
-    {{- include "www2.labels" . | nindent 4 }}
+    {{- include "web-j4.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:
@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "www2.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "web-j4.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
