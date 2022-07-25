@@ -1,6 +1,6 @@
 locals {
   cluster_version = "1.22"
-  cluster_name = "my-eks-${replace(local.cluster_version, ".", "_")}"
+  cluster_name = "my-eks-${replace(local.cluster_version, ".", "-")}"
   vpc_id = "vpc-065b33a8baa73e2a3"
   instance_type = "t3.medium"
   ec2_key_pair_name = "fh-sandbox"
@@ -58,6 +58,8 @@ data "aws_eks_cluster_auth" "eks" {
 }
 
 module "eks" {
+  create = true
+
   source  = "terraform-aws-modules/eks/aws"
   version = "18.26.3"
 
