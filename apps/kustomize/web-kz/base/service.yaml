@@ -1,0 +1,22 @@
+---
+# Source: web-kz/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-kz
+  labels:
+    helm.sh/chart: web-kz-0.3.0
+    app.kubernetes.io/name: web-kz
+    app.kubernetes.io/instance: web-kz
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: web-kz
+    app.kubernetes.io/instance: web-kz

@@ -1,0 +1,24 @@
+---
+# Source: web-j4/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-j4
+  labels:
+    helm.sh/chart: web-j4-0.3.0
+    app.kubernetes.io/name: web-j4
+    app.kubernetes.io/instance: web-j4
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+        external-dns.alpha.kubernetes.io/hostname: july4.fhcdan.net
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: web-j4
+    app.kubernetes.io/instance: web-j4

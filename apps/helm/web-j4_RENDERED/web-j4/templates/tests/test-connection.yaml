@@ -1,0 +1,21 @@
+---
+# Source: web-j4/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "web-j4-test-connection"
+  labels:
+    helm.sh/chart: web-j4-0.3.0
+    app.kubernetes.io/name: web-j4
+    app.kubernetes.io/instance: web-j4
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['web-j4:80']
+  restartPolicy: Never

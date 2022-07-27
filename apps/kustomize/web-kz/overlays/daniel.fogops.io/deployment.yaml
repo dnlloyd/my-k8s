@@ -1,0 +1,12 @@
+---
+# Source: web-kz/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-kz
+spec:
+  template:
+    spec:
+      containers:
+        - name: web-kz
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp:0.2.0"
