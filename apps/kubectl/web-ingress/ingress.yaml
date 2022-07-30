@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  labels:
+    app: web
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    external-dns.alpha.kubernetes.io/hostname: fhcdan.net
+    kubernetes.io/ingress.class: alb
+spec:
+  rules:
+  - host: kz.fhcdan.net
+    http:
+      paths:
+        - backend:
+            service:
+              name: web-kz
+              port: 
+                name: http
+          path: /
+          pathType: Prefix
+  - host: skp.fhcdan.net
+    http:
+      paths:
+        - backend:
+            service:
+              name: web-skp
+              port: 
+                name: http
+          path: /
+          pathType: Prefix
