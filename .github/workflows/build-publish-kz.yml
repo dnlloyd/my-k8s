@@ -1,4 +1,4 @@
-name: SKP web Docker image build and push to ECR
+name: KZ web Docker image build and push to ECR
 on:
   push:
     branches: [ master ]

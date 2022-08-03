@@ -22,7 +22,7 @@ spec:
         run: web-skp
     spec:
       containers:
-      - image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp:0.2.0
+      - image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp:0.3.0
         name: web-skp
         imagePullPolicy: Always
         ports:
