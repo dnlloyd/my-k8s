@@ -172,8 +172,22 @@ module "eks" {
       # bootstrap_extra_args = "--container-runtime containerd --kubelet-extra-args '--max-pods=20'"
 
       # Enable containerd, ssm
+      # Explicitly set container runtime on EKS with Kubernetes version 1.22:
+      # Ref: https://github.com/terraform-aws-modules/terraform-aws-eks/tree/v18.26.1/examples/eks_managed_node_group#container-runtime--user-data
+      # This section should be updated / removed when updating to Kubernetes 1.24
+      # Ref: https://docs.aws.amazon.com/eks/latest/userguide/dockershim-deprecation.html
+      # Setting max pod to 110
+      # Ref: https://aws.amazon.com/blogs/containers/amazon-vpc-cni-increases-pods-per-node-limits/
       pre_bootstrap_user_data = <<-EOT
+      #!/bin/bash
+      set -ex
+      cat <<-EOF > /etc/profile.d/bootstrap.sh
       export CONTAINER_RUNTIME="containerd"
+      export USE_MAX_PODS=false
+      export KUBELET_EXTRA_ARGS="--max-pods=110"
+      EOF
+      # Source extra environment variables in bootstrap script
+      sed -i '/^set -o errexit/a\\nsource /etc/profile.d/bootstrap.sh' /etc/eks/bootstrap.sh
       EOT
 
       update_config = {
