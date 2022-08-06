@@ -26,6 +26,6 @@ data "tfe_outputs" "fhc_dan" {
 }
 
 output "primary_bucket_name" {
-  value = data.tfe_outputs.fhc_dan.values.primary_bucket_name
+  value = data.tfe_outputs.fhc_dan.values
   sensitive = true
 }
