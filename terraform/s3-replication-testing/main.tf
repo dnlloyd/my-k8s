@@ -20,3 +20,4 @@ module "s3_rep_test" {
 output "primary_bucket_name" {
   value = module.s3_rep_test.bucket_name
 }
+#trigger 01
