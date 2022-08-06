@@ -17,6 +17,6 @@ module "s3_rep_test" {
   name = "primary"
 }
 
-output "bucket_name" {
-  value = s3_rep_test.bucket_name
+output "primary_bucket_name" {
+  value = module.s3_rep_test.bucket_name
 }
