@@ -17,5 +17,3 @@ module "s3_rep_test_dr" {
   name = "dr"
   dr_enabled = true
 }
-
-#trigger 01
