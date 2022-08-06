@@ -1,6 +1,11 @@
 # Apply #1
 resource "aws_s3_bucket" "rep_test" {
-  bucket = var.dr_enabled ? "reptest-dr" : "reptest"
+  # bucket = var.dr_enabled ? "reptest-dr" : "reptest"
+  bucket_prefix = "reptest"
+}
+
+output "bucket_name" {
+  value = aws_s3_bucket.rep_test.id
 }
 
 # resource "aws_iam_role_policy_attachment" "replication" {
