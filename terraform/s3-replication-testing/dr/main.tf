@@ -17,3 +17,14 @@ module "s3_rep_test_dr" {
   name = "dr"
   dr_enabled = true
 }
+
+data "tfe_outputs" "fhc_dan" {
+  # count = var.dr_enabled ? 1 : 0
+  
+  organization = "fhc-dan"
+  workspace = "s3-replication-testing"
+}
+
+output "primary_bucket_name" {
+  value = data.tfe_outputs.fhc_dan.values.primary_bucket_name
+}
