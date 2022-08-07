@@ -9,5 +9,5 @@ module "s3_rep_test" {
 }
 
 output "rep_test_bucket_name" {
-  value = module.s3_rep_test.bucket_name
+  value = module.s3_rep_test.rep_test_bucket_arn
 }

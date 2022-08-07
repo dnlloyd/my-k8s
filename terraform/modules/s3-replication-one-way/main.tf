@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "rep_test" {
   bucket_prefix = "reptest"
 }
 
-output "bucket_name" {
+output "rep_test_bucket_arn" {
   value = aws_s3_bucket.rep_test.arn
 }
 
