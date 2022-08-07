@@ -20,12 +20,12 @@ module "s3_rep_test_dr" {
   dr_enabled = true
 }
 
-output "rep_test_bucket_name_dr" {
-  value = module.s3_rep_test_dr.bucket_name
-}
+# output "rep_test_bucket_name_dr" {
+#   value = module.s3_rep_test_dr.rep_test_bucket_arn
+# }
 
 data "aws_s3_bucket" "rep_test_dr" {
-  bucket = module.s3_rep_test_dr.bucket_name
+  bucket = module.s3_rep_test_dr.rep_test_bucket_arn
 }
 
 resource "aws_iam_role" "s3_replication" {
