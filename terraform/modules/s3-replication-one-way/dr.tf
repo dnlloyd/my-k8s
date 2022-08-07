@@ -3,9 +3,9 @@ variable "primary_remote_state" {
   type = map(any)
 }
 
-# provider "aws" {
-#   alias = "primary"
-# }
+provider "aws" {
+  alias = "primary"
+}
 
 ###########
 ## IF DR ##
