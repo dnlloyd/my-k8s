@@ -18,18 +18,34 @@ module "s3_rep_test_dr" {
   dr_enabled = true
 }
 
-data "tfe_outputs" "fhc_dan" {
-  # count = var.dr_enabled ? 1 : 0
-  
-  organization = "fhc-dan"
-  workspace = "s3-replication-testing"
+data "terraform_remote_state" "primary" {
+  backend = "remote"
+
+  config = {
+    organization = "fhc-dan"
+    workspaces = {
+      name = "s3-replication-testing"
+    }
+  }
 }
+
+resource "aws_s3_bucket" "tester" {
+  bucket_prefix = data.terraform_remote_state.primary.outputs.primary_bucket_name
+}
+
+
+# data "tfe_outputs" "fhc_dan" {
+#   # count = var.dr_enabled ? 1 : 0
+  
+#   organization = "fhc-dan"
+#   workspace = "s3-replication-testing"
+# }
 
 # output "primary_bucket_name" {
 #   value = data.tfe_outputs.fhc_dan.values
 #   sensitive = true
 # }
 
-resource "aws_s3_bucket" "tester" {
-  bucket_prefix = data.tfe_outputs.fhc_dan.values.primary_bucket_name
-}
+# resource "aws_s3_bucket" "tester" {
+#   bucket_prefix = data.tfe_outputs.fhc_dan.values.primary_bucket_name
+# }
