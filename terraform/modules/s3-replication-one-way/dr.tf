@@ -86,7 +86,7 @@ resource "aws_iam_role_policy_attachment" "replication" {
 }
 
 locals {
-  rep_test_bucket_arn = aws_s3_bucket_versioning.rep_test.arn
+  rep_test_bucket_arn = aws_s3_bucket.rep_test.arn
 }
 
 resource "aws_s3_bucket_replication_configuration" "replication" {
