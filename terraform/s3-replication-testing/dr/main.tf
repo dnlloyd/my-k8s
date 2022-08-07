@@ -94,7 +94,7 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
     status = "Enabled"
 
     destination {
-      bucket = module.s3_rep_test_dr.rep_test_bucket_arn
+      bucket = module.s3_rep_test_dr.rep_test_bucket.arn
       storage_class = "STANDARD"
     }
   }
