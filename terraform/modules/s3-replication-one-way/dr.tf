@@ -1,10 +1,3 @@
-# data "tfe_outputs" "foo" {
-#   count = var.dr_enabled ? 1 : 0
-
-#   organization = "fhc-dan"
-#   workspace = "s3-replication-testing"
-# }
-
 # provider "aws" {
 #   alias = "primary"
 # }

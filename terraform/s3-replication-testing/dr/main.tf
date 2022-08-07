@@ -7,7 +7,6 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-
 data "terraform_remote_state" "primary" {
   backend = "remote"
 
@@ -21,12 +20,19 @@ data "terraform_remote_state" "primary" {
 
 module "s3_rep_test_dr" {
   source = "../../modules/s3-replication-one-way"
-
-  name = "dr"
+  
   dr_enabled = true
 }
 
+###########
 ## IF DR ##
+###########
+# inputs: 
+# AWS provider for us-east-1
+# Primary bucket ARN:   data.terraform_remote_state.primary.outputs.rep_test_bucket.rep_test_bucket.arn
+# DR bucket ARN:        module.s3_rep_test_dr.rep_test_bucket.arn
+# DR bucket ID (name):  data.terraform_remote_state.primary.outputs.rep_test_bucket.rep_test_bucket.id
+
 resource "aws_iam_role" "s3_replication" {
   name = "S3ReplicationTest"
 

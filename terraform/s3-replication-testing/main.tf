@@ -4,8 +4,6 @@ provider "aws" {
 
 module "s3_rep_test" {
   source = "../modules/s3-replication-one-way"
-
-  name = "primary"
 }
 
 output "rep_test_bucket" {
