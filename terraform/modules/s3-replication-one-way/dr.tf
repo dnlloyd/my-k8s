@@ -5,6 +5,7 @@ variable "primary_remote_state" {
 
 provider "aws" {
   alias = "primary"
+  region  = "us-east-1"
 }
 
 ###########
