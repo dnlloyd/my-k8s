@@ -78,24 +78,24 @@ resource "aws_iam_policy" "s3_replication" {
   })
 }
 
-# resource "aws_iam_role_policy_attachment" "replication" {
-#   role = aws_iam_role.s3_replication.name
-#   policy_arn = aws_iam_policy.s3_replication.arn
-# }
+resource "aws_iam_role_policy_attachment" "replication" {
+  role = aws_iam_role.s3_replication.name
+  policy_arn = aws_iam_policy.s3_replication.arn
+}
 
-# resource "aws_s3_bucket_replication_configuration" "replication" {
-#   # Must have bucket versioning enabled first
-#   # depends_on = [aws_s3_bucket_versioning.source]
+resource "aws_s3_bucket_replication_configuration" "replication" {
+  # Must have bucket versioning enabled first
+  # depends_on = [aws_s3_bucket_versioning.source]
 
-#   role = aws_iam_role.s3_replication.arn
-#   bucket = data.terraform_remote_state.primary.outputs.rep_test_bucket.rep_test_bucket.id
+  role = aws_iam_role.s3_replication.arn
+  bucket = data.terraform_remote_state.primary.outputs.rep_test_bucket.rep_test_bucket.id
 
-#   rule {
-#     status = "Enabled"
+  rule {
+    status = "Enabled"
 
-#     destination {
-#       bucket = module.s3_rep_test_dr.rep_test_bucket_arn
-#       storage_class = "STANDARD"
-#     }
-#   }
-# }
+    destination {
+      bucket = module.s3_rep_test_dr.rep_test_bucket_arn
+      storage_class = "STANDARD"
+    }
+  }
+}
