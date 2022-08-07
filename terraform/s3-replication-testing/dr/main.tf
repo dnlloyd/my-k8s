@@ -51,7 +51,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${data.terraform_remote_state.primary.outputs.rep_test_bucket.arn}"
+          "${data.terraform_remote_state.primary.outputs.rep_test_bucket.rep_test_bucket.arn}"
         ]
       },
       {
@@ -62,7 +62,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${data.terraform_remote_state.primary.outputs.rep_test_bucket.arn}/*"
+          "${data.terraform_remote_state.primary.outputs.rep_test_bucket.rep_test_bucket.arn}/*"
         ]
       },
       {
