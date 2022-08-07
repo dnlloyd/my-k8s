@@ -8,6 +8,6 @@ module "s3_rep_test" {
   name = "primary"
 }
 
-output "rep_test_bucket_name" {
+output "rep_test_bucket_arn" {
   value = module.s3_rep_test.rep_test_bucket_arn
 }
