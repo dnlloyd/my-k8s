@@ -20,8 +20,9 @@ data "terraform_remote_state" "primary" {
 
 module "s3_rep_test_dr" {
   source = "../../modules/s3-replication-one-way"
-  
+
   dr_enabled = true
+  primary_remote_state = data.terraform_remote_state.primary.outputs
 }
 
 ###########

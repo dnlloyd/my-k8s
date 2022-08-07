@@ -1,3 +1,7 @@
+variable "primary_remote_state" {
+  default = null
+}
+
 # provider "aws" {
 #   alias = "primary"
 # }
