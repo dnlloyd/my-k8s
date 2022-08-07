@@ -23,7 +23,7 @@ module "s3_rep_test_dr" {
 
   providers = {
     aws = aws
-    aws = aws.primary
+    aws.primary = aws.primary
   }
 
   dr_enabled = true
