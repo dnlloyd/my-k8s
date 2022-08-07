@@ -3,19 +3,9 @@ variable "primary_remote_state" {
   type = map(any)
 }
 
-# provider "aws" {
-#   alias = "primary"
-#   region  = "us-east-1"
-# }
-
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 2.7.0"
-      configuration_aliases = [ aws.primary ]
-    }
-  }
+provider "aws" {
+  alias = "primary"
+  region  = "us-east-1"
 }
 
 ###########
