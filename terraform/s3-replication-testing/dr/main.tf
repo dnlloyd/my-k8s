@@ -1,4 +1,5 @@
 provider "aws" {
+  alias = "dr"
   region  = "us-east-2"
 }
 
@@ -22,7 +23,8 @@ module "s3_rep_test_dr" {
   source = "../../modules/s3-replication-one-way"
 
   providers = {
-    aws = aws.primary
+    aws        = aws.dr
+    aws.shared = aws.primary
   }
 
   dr_enabled = true
