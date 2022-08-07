@@ -24,9 +24,9 @@ module "s3_rep_test_dr" {
 #   value = module.s3_rep_test_dr.rep_test_bucket_arn
 # }
 
-data "aws_s3_bucket" "rep_test_dr" {
-  bucket = module.s3_rep_test_dr.rep_test_bucket_arn
-}
+# data "aws_s3_bucket" "rep_test_dr" {
+#   bucket = module.s3_rep_test_dr.rep_test_bucket_arn
+# }
 
 resource "aws_iam_role" "s3_replication" {
   name = "S3ReplicationTest"
@@ -59,7 +59,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${data.aws_s3_bucket.rep_test_primary.arn}"
+          "${data.terraform_remote_state.primary.outputs.rep_test_bucket_arn}"
         ]
       },
       {
@@ -70,7 +70,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${data.aws_s3_bucket.rep_test_primary.arn}/*"
+          "${data.terraform_remote_state.primary.outputs.rep_test_bucket_arn}/*"
         ]
       },
       {
@@ -80,7 +80,7 @@ resource "aws_iam_policy" "s3_replication" {
           "s3:ReplicateTags"
         ],
         "Effect": "Allow",
-        "Resource": "${data.terraform_remote_state.primary.outputs.rep_test_bucket_arn}/*"
+        "Resource": "${module.s3_rep_test_dr.rep_test_bucket_arn}/*"
       }
     ]
   })
