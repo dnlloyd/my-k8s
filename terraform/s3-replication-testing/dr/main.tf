@@ -2,6 +2,12 @@ provider "aws" {
   region  = "us-east-2"
 }
 
+provider "aws" {
+  alias = "primary"
+  region  = "us-east-1"
+}
+
+
 data "terraform_remote_state" "primary" {
   backend = "remote"
 
@@ -20,6 +26,7 @@ module "s3_rep_test_dr" {
   dr_enabled = true
 }
 
+## IF DR ##
 resource "aws_iam_role" "s3_replication" {
   name = "S3ReplicationTest"
 
@@ -84,6 +91,7 @@ resource "aws_iam_role_policy_attachment" "replication" {
 }
 
 resource "aws_s3_bucket_replication_configuration" "replication" {
+  provider = aws.primary
   # Must have bucket versioning enabled first
   # depends_on = [aws_s3_bucket_versioning.source]
 
