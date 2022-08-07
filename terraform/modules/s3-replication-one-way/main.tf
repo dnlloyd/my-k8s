@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "rep_test" {
 }
 
 output "bucket_name" {
-  value = aws_s3_bucket.rep_test.id
+  value = aws_s3_bucket.rep_test.arn
 }
 
 # resource "aws_iam_role_policy_attachment" "replication" {
