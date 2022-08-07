@@ -21,9 +21,9 @@ data "terraform_remote_state" "primary" {
 module "s3_rep_test_dr" {
   source = "../../modules/s3-replication-one-way"
 
-  providers = {
-    aws = aws.primary
-  }
+  # providers = {
+  #   aws = aws.primary
+  # }
 
   dr_enabled = true
   primary_remote_state = data.terraform_remote_state.primary.outputs
