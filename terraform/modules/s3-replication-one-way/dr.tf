@@ -3,9 +3,9 @@ variable "primary_remote_state" {
   type = map(any)
 }
 
-provider "aws" {
-  alias = "primary"
-}
+# provider "aws" {
+#   alias = "primary"
+# }
 
 ###########
 ## IF DR ##
@@ -85,6 +85,10 @@ resource "aws_iam_role_policy_attachment" "replication" {
   policy_arn = aws_iam_policy.s3_replication[0].arn
 }
 
+locals {
+  rep_test_bucket_arn = aws_s3_bucket_versioning.rep_test.arn
+}
+
 resource "aws_s3_bucket_replication_configuration" "replication" {
   count = var.dr_enabled ? 1 : 0
   provider = aws.primary
@@ -99,7 +103,7 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
     status = "Enabled"
 
     destination {
-      bucket = aws_s3_bucket_versioning.rep_test.arn
+      bucket = local.rep_test_bucket_arn
       storage_class = "STANDARD"
     }
   }
