@@ -25,7 +25,11 @@ data "tfe_outputs" "fhc_dan" {
   workspace = "s3-replication-testing"
 }
 
-output "primary_bucket_name" {
-  value = data.tfe_outputs.fhc_dan.values
-  sensitive = true
+# output "primary_bucket_name" {
+#   value = data.tfe_outputs.fhc_dan.values
+#   sensitive = true
+# }
+
+resource "aws_s3_bucket" "tester" {
+  bucket_prefix = data.tfe_outputs.fhc_dan.values.primary_bucket_name
 }
