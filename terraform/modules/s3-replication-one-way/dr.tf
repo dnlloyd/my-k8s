@@ -51,7 +51,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${primary_remote_state.rep_test_bucket.rep_test_bucket.arn}"
+          "${var.primary_remote_state.rep_test_bucket.rep_test_bucket.arn}"
         ]
       },
       {
@@ -62,7 +62,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${primary_remote_state.rep_test_bucket.rep_test_bucket.arn}/*"
+          "${var.primary_remote_state.rep_test_bucket.rep_test_bucket.arn}/*"
         ]
       },
       {
@@ -93,7 +93,7 @@ resource "aws_iam_role_policy_attachment" "replication" {
 #   depends_on = [aws_s3_bucket_versioning.rep_test]
 
 #   role = aws_iam_role.s3_replication[0].arn
-#   bucket = primary_remote_state.rep_test_bucket.rep_test_bucket.id
+#   bucket = var.primary_remote_state.rep_test_bucket.rep_test_bucket.id
 
 #   rule {
 #     status = "Enabled"
