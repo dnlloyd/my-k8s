@@ -1,5 +1,6 @@
 variable "primary_remote_state" {
-  default = {}
+  default = null
+  type = map(any)
 }
 
 # provider "aws" {
