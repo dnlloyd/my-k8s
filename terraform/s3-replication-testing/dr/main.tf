@@ -2,22 +2,6 @@ provider "aws" {
   region  = "us-east-2"
 }
 
-# provider "aws" {
-#   alias   = "primary"
-#   region  = "us-east-1"
-# }
-
-module "s3_rep_test_dr" {
-  source = "../../modules/s3-replication-one-way"
-
-  # providers = {
-  #   aws = aws.primary
-  # }
-
-  name = "dr"
-  dr_enabled = true
-}
-
 data "terraform_remote_state" "primary" {
   backend = "remote"
 
@@ -29,23 +13,79 @@ data "terraform_remote_state" "primary" {
   }
 }
 
-resource "aws_s3_bucket" "tester" {
-  bucket_prefix = data.terraform_remote_state.primary.outputs.primary_bucket_name
+module "s3_rep_test_dr" {
+  source = "../../modules/s3-replication-one-way"
+
+  name = "dr"
+  dr_enabled = true
 }
 
+output "rep_test_bucket_name_dr" {
+  value = module.s3_rep_test_dr.bucket_name
+}
 
-# data "tfe_outputs" "fhc_dan" {
-#   # count = var.dr_enabled ? 1 : 0
-  
-#   organization = "fhc-dan"
-#   workspace = "s3-replication-testing"
-# }
+data "aws_s3_bucket" "rep_test_primary" {
+  bucket = data.terraform_remote_state.primary.outputs.rep_test_bucket_name
+}
 
-# output "primary_bucket_name" {
-#   value = data.tfe_outputs.fhc_dan.values
-#   sensitive = true
-# }
+data "aws_s3_bucket" "rep_test_dr" {
+  bucket = module.s3_rep_test_dr.bucket_name
+}
 
-# resource "aws_s3_bucket" "tester" {
-#   bucket_prefix = data.tfe_outputs.fhc_dan.values.primary_bucket_name
-# }
+resource "aws_iam_role" "s3_replication" {
+  name = "S3ReplicationTest"
+
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "sts:AssumeRole",
+        "Principal": {
+          "Service": "s3.amazonaws.com"
+        },
+        "Effect": "Allow",
+        "Sid": ""
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "s3_replication" {
+  name = "S3ReplicationTest"
+
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "s3:GetReplicationConfiguration",
+          "s3:ListBucket"
+        ],
+        "Effect": "Allow",
+        "Resource": [
+          "${data.aws_s3_bucket.rep_test_primary.arn}"
+        ]
+      },
+      {
+        "Action": [
+          "s3:GetObjectVersionForReplication",
+          "s3:GetObjectVersionAcl",
+          "s3:GetObjectVersionTagging"
+        ],
+        "Effect": "Allow",
+        "Resource": [
+          "${data.aws_s3_bucket.rep_test_primary.arn}/*"
+        ]
+      },
+      {
+        "Action": [
+          "s3:ReplicateObject",
+          "s3:ReplicateDelete",
+          "s3:ReplicateTags"
+        ],
+        "Effect": "Allow",
+        "Resource": "${data.aws_s3_bucket.rep_test_dr}/*"
+      }
+    ]
+  })
+}
