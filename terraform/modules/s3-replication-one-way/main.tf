@@ -1,6 +1,4 @@
-# Apply #1
 resource "aws_s3_bucket" "rep_test" {
-  # bucket = var.dr_enabled ? "reptest-dr" : "reptest"
   bucket_prefix = "reptest"
 }
 
