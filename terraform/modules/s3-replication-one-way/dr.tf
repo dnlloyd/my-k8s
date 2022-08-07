@@ -85,25 +85,25 @@ resource "aws_iam_role_policy_attachment" "replication" {
   policy_arn = aws_iam_policy.s3_replication[0].arn
 }
 
-# resource "aws_s3_bucket_replication_configuration" "replication" {
-#   count = var.dr_enabled ? 1 : 0
-#   provider = aws.primary
+resource "aws_s3_bucket_replication_configuration" "replication" {
+  count = var.dr_enabled ? 1 : 0
+  provider = aws.primary
   
-#   # Must have bucket versioning enabled first
-#   depends_on = [aws_s3_bucket_versioning.rep_test]
+  # Must have bucket versioning enabled first
+  depends_on = [aws_s3_bucket_versioning.rep_test]
 
-#   role = aws_iam_role.s3_replication[0].arn
-#   bucket = var.primary_remote_state.rep_test_bucket.rep_test_bucket.id
+  role = aws_iam_role.s3_replication[0].arn
+  bucket = var.primary_remote_state.rep_test_bucket.rep_test_bucket.id
 
-#   rule {
-#     status = "Enabled"
+  rule {
+    status = "Enabled"
 
-#     destination {
-#       bucket = aws_s3_bucket_versioning.rep_test.arn
-#       storage_class = "STANDARD"
-#     }
-#   }
-# }
+    destination {
+      bucket = aws_s3_bucket_versioning.rep_test.arn
+      storage_class = "STANDARD"
+    }
+  }
+}
 
 
 
