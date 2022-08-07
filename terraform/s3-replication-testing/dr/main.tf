@@ -23,7 +23,7 @@ module "s3_rep_test_dr" {
   source = "../../modules/s3-replication-one-way"
 
   providers = {
-    aws        = aws.dr
+    aws = aws.dr
     aws.shared = aws.primary
   }
 
