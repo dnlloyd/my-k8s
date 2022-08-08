@@ -43,7 +43,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${var.primary_remote_state.rep_test_bucket.rep_test_bucket.arn}"
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}"
         ]
       },
       {
@@ -54,7 +54,7 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${var.primary_remote_state.rep_test_bucket.rep_test_bucket.arn}/*"
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}/*"
         ]
       },
       {
@@ -89,7 +89,7 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
   depends_on = [aws_s3_bucket_versioning.rep_test]
 
   role = aws_iam_role.s3_replication[0].arn
-  bucket = var.primary_remote_state.rep_test_bucket.rep_test_bucket.id
+  bucket = var.primary_remote_state.rep_test_outputs.rep_test_bucket.id
 
   rule {
     status = "Enabled"
@@ -100,51 +100,3 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# data "aws_s3_bucket" "rep_test_primary" {
-#   count = var.dr_enabled ? 1 : 0
-#   provider = aws.primary
-
-#   bucket = 
-# }
-
-
-
-# resource "aws_s3_bucket" "destination" {
-#   provider = aws.dr
-  
-#   bucket = "destination-reptest-fhcdan-net"
-# }
-
-# resource "aws_s3_bucket_versioning" "destination" {
-#   provider = aws.dr
-
-#   bucket = aws_s3_bucket.destination.id
-#   versioning_configuration {
-#     status = "Enabled"
-#   }
-# }
