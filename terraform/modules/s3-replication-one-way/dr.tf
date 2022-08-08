@@ -5,10 +5,12 @@ provider "aws" {
   region  = "us-east-1"
 }
 
+# By default, DR is not enabled
 variable "dr_enabled" {
   default = false
 }
 
+# In the DR context, this variable contains a map of all the primary deployment's outputs
 variable "primary_remote_state" {
   default = null
   type = map(any)
@@ -51,7 +53,8 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}"
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}",
+          "${aws_s3_bucket.rep_test.arn}"
         ]
       },
       {
@@ -62,7 +65,8 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}/*"
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}/*",
+          "${aws_s3_bucket.rep_test.arn}/*"
         ]
       },
       {
@@ -72,7 +76,10 @@ resource "aws_iam_policy" "s3_replication" {
           "s3:ReplicateTags"
         ],
         "Effect": "Allow",
-        "Resource": "${aws_s3_bucket.rep_test.arn}/*"
+        "Resource": [
+          "${aws_s3_bucket.rep_test.arn}/*",
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}/*"
+        ]
       }
     ]
   })
@@ -93,7 +100,7 @@ locals {
   rep_test_bucket_arn = aws_s3_bucket.rep_test.arn
 }
 
-resource "aws_s3_bucket_replication_configuration" "replication" {
+resource "aws_s3_bucket_replication_configuration" "replication_primary_to_dr" {
   count = var.dr_enabled ? 1 : 0
   provider = aws.primary
   
@@ -108,6 +115,26 @@ resource "aws_s3_bucket_replication_configuration" "replication" {
 
     destination {
       bucket = local.rep_test_bucket_arn
+      storage_class = "STANDARD"
+    }
+  }
+}
+
+resource "aws_s3_bucket_replication_configuration" "replication_dr_to_primary" {
+  count = var.dr_enabled ? 1 : 0
+  # provider = aws.primary
+  
+  # Must have bucket versioning enabled first
+  depends_on = [aws_s3_bucket_versioning.rep_test]
+
+  role = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.rep_test.id
+
+  rule {
+    status = "Enabled"
+
+    destination {
+      bucket = var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn
       storage_class = "STANDARD"
     }
   }
