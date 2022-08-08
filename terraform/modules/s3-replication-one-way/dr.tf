@@ -1,13 +1,20 @@
-variable "primary_remote_state" {
-  default = null
-  type = map(any)
-}
+# This file contains variables, resources, etc. used only when DR context is applied
 
 provider "aws" {
   alias = "primary"
   region  = "us-east-1"
 }
 
+variable "dr_enabled" {
+  default = false
+}
+
+variable "primary_remote_state" {
+  default = null
+  type = map(any)
+}
+
+# Only create role in DR context
 resource "aws_iam_role" "s3_replication" {
   count = var.dr_enabled ? 1 : 0
 
@@ -28,6 +35,7 @@ resource "aws_iam_role" "s3_replication" {
   })
 }
 
+# Only create policy in DR context
 resource "aws_iam_policy" "s3_replication" {
   count = var.dr_enabled ? 1 : 0
 
@@ -70,6 +78,7 @@ resource "aws_iam_policy" "s3_replication" {
   })
 }
 
+# Only create attachment in DR context
 resource "aws_iam_role_policy_attachment" "replication" {
   count = var.dr_enabled ? 1 : 0
 
@@ -77,6 +86,9 @@ resource "aws_iam_role_policy_attachment" "replication" {
   policy_arn = aws_iam_policy.s3_replication[0].arn
 }
 
+# In a DR context, the aws_s3_bucket_replication_configuration resource below uses the 
+# primary region provider. This allows us to get the DR region bucket resource for the 
+# destination
 locals {
   rep_test_bucket_arn = aws_s3_bucket.rep_test.arn
 }

@@ -14,10 +14,7 @@ resource "aws_s3_bucket_versioning" "rep_test" {
   }
 }
 
+# Net new: Capture output of resources that need to be looked up in DR context
 output "rep_test_bucket" {
-  value = aws_s3_bucket.rep_test
-}
-
-output "rep_test_bucket_acl" {
   value = aws_s3_bucket.rep_test
 }

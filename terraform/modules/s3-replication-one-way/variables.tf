@@ -1,3 +1,1 @@
-variable "dr_enabled" {
-  default = false
-}
+# Variables for regular module call
