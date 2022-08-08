@@ -20,7 +20,7 @@ data "terraform_remote_state" "primary" {
 }
 
 module "s3_rep_test_dr" {
-  source = "../../modules/s3-replication-one-way"
+  source = "../../modules/s3-replication-two-way"
 
   providers = {
     aws = aws.dr

@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "s3_rep_test" {
-  source = "../modules/s3-replication-one-way"
+  source = "../modules/s3-replication-two-way"
 }
 
 # Net new: Capture all the outputs from the module instantiation above

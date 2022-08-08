@@ -53,7 +53,8 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}"
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}",
+          "${aws_s3_bucket.rep_test.arn}"
         ]
       },
       {
@@ -64,7 +65,8 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}/*"
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}/*",
+          "${aws_s3_bucket.rep_test.arn}/*"
         ]
       },
       {
@@ -75,7 +77,8 @@ resource "aws_iam_policy" "s3_replication" {
         ],
         "Effect": "Allow",
         "Resource": [
-          "${aws_s3_bucket.rep_test.arn}/*"
+          "${aws_s3_bucket.rep_test.arn}/*",
+          "${var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn}/*"
         ]
       }
     ]
@@ -113,6 +116,27 @@ resource "aws_s3_bucket_replication_configuration" "replication_primary_to_dr" {
 
     destination {
       bucket = local.rep_test_bucket_arn
+      storage_class = "STANDARD"
+    }
+  }
+}
+
+# Replication from DR region to primary region
+resource "aws_s3_bucket_replication_configuration" "replication_dr_to_primary" {
+  count = var.dr_enabled ? 1 : 0
+  # provider = aws.primary
+  
+  # Must have bucket versioning enabled first
+  depends_on = [aws_s3_bucket_versioning.rep_test]
+
+  role = aws_iam_role.s3_replication[0].arn
+  bucket = aws_s3_bucket.rep_test.id
+
+  rule {
+    status = "Enabled"
+
+    destination {
+      bucket = var.primary_remote_state.rep_test_outputs.rep_test_bucket.arn
       storage_class = "STANDARD"
     }
   }
