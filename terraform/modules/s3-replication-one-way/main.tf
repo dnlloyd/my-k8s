@@ -17,3 +17,7 @@ resource "aws_s3_bucket_versioning" "rep_test" {
 output "rep_test_bucket" {
   value = aws_s3_bucket.rep_test
 }
+
+output "rep_test_bucket_acl" {
+  value = aws_s3_bucket.rep_test
+}
