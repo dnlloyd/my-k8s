@@ -6,6 +6,7 @@ module "s3_rep_test" {
   source = "../modules/s3-replication-one-way"
 }
 
-output "rep_test_bucket" {
-  value = module.s3_rep_test
-}
+# Net new
+# output "rep_test_bucket" {
+#   value = module.s3_rep_test
+# }
