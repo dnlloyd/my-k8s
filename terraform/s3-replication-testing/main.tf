@@ -7,6 +7,6 @@ module "s3_rep_test" {
 }
 
 # Net new
-# output "rep_test_bucket" {
-#   value = module.s3_rep_test
-# }
+output "rep_test_bucket" {
+  value = module.s3_rep_test
+}
