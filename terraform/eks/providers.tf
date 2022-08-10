@@ -1,17 +1,17 @@
-# terraform {
-#   required_version = ">= 0.13.1"
+terraform {
+  required_version = ">= 1.0"
 
-#   required_providers {
-#     aws = {
-#       source  = "hashicorp/aws"
-#       version = "4.3.0"
-#     }
-#     kubernetes = {
-#       source  = "hashicorp/kubernetes"
-#       version = "2.10"
-#     }
-#   } 
-# }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.25.0"
+    }
+    # kubernetes = {
+    #   source  = "hashicorp/kubernetes"
+    #   version = "2.10"
+    # }
+  } 
+}
 
 provider "kubernetes" {
   host = module.eks.cluster_endpoint
