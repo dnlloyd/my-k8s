@@ -2,6 +2,10 @@
 
 https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#normal-user
 
+https://kubernetes.io/docs/reference/access-authn-authz/authentication/
+
+https://kubernetes.io/docs/concepts/security/controlling-access/
+
 ## Create client certificate for user
 
 Create a private key
