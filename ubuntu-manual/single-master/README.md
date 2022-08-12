@@ -1,7 +1,7 @@
-# Install Kubernetes on Ubuntu
+# Install Kubernetes on Ubuntu (Single control plane node)
 
-## Terraform EC2 IaC
-[Terraform EC2](../terraform/k8s-manual-ubuntu)
+## IaC
+[terraform/k8s-manual-ubuntu/single-master](../terraform/k8s-manual-ubuntu/single-master)
 
 ## Install
 

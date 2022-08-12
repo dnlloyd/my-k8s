@@ -5,7 +5,7 @@ metadata:
   name: read-only
 rules:
 - apiGroups: [“”] # “” indicates the core API group
-  resources: [“pods”, "svc"]
+  resources: [“pods”, "services"]
   verbs: [“get”, “watch”, “list”]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

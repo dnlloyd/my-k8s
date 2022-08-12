@@ -65,6 +65,7 @@ resource "aws_security_group" "k8s_ubu_worker" {
   }
 }
 
+# This allows public access to the API server
 resource "aws_security_group" "k8s_ubu_master" {
   name = "k8s-ubu-master"
   description = "Connectivity for k8s manual install"
