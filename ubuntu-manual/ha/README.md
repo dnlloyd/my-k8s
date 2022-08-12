@@ -56,3 +56,31 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+
+## Public endpoint connectivity
+
+Add config from `<control-plane-host>:/etc/kubernetes/admin.conf` to `~/.kube/config` but change server to `server: https://myk8sapi.fhcdan.net`
+
+example:
+```
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: XXXXXXXXXXX==
+    server: https://myk8sapi.fhcdan.net
+  name: myk8sapi.fhcdan.net
+contexts:
+- context:
+    cluster: myk8sapi.fhcdan.net
+    user: kubernetes-admin
+  name: admin@myk8s
+current-context: admin@myk8s
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: XXX==
+    client-key-data: XXXXXXXXXXXXXXXX=
+
+```
