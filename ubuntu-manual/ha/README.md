@@ -59,6 +59,8 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ## Public endpoint connectivity
 
+[optional-controlling-your-cluster-from-machines-other-than-the-control-plane-node](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#optional-controlling-your-cluster-from-machines-other-than-the-control-plane-node)
+
 Add config from `<control-plane-host>:/etc/kubernetes/admin.conf` to `~/.kube/config` but change server to `server: https://myk8sapi.fhcdan.net`
 
 example:
@@ -84,3 +86,7 @@ users:
     client-key-data: XXXXXXXXXXXXXXXX=
 
 ```
+
+## Tear down
+
+[Tear down](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#tear-down)

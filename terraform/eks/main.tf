@@ -127,6 +127,7 @@ module "eks" {
       name = "${local.cluster_name}-managed"
 
       ############### Launch template ###############
+      # AMI comes from: https://github.com/awslabs/amazon-eks-ami
       # create_launch_template = false
       # launch_template_name = ""
       create_launch_template = true

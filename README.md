@@ -2,14 +2,17 @@
 
 ![arch.png](arch.png)
 
-## 1. [ECR](terraform/ecr)
+## Directory
 
-## 2. [Docker](docker)
+### 1. [ECR](terraform/ecr)
 
-## 3. [EKS](terraform/eks)
+### 2. [Docker](docker)
 
-## 4. [External DNS](apps/kubectl/external-dns)
+### 3. [EKS](terraform/eks)
 
-## 5. [Argo CD](argo-cd)
+### 4. [External DNS](apps/kubectl/external-dns)
 
-## 6. [Apps](apps/)
+### 5. [Argo CD](argo-cd)
+
+### 6. [Apps](apps/)
+
