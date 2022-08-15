@@ -1,10 +1,16 @@
 # External DNS
 
+## Terraform
+
+[../../../terraform/eks/external-dns.tf](../../../terraform/eks/external-dns.tf)
+
+## Reference
+
 https://aws.amazon.com/premiumsupport/knowledge-center/eks-set-up-externaldns/
 
 https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md
 
-## Create
+## Manual (Old way)
 
 Policy: MyEksRoute53Manual
 
