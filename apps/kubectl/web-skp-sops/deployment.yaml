@@ -27,5 +27,23 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        volumeMounts:
+          - name: secret-volume
+            mountPath: /etc/secret-volume
+        env:
+        - name: MY_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: fake-secret
+              key: username
+        - name: MY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: fake-secret
+              key: password
       imagePullSecrets:
         - name: regcred
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: fake-secret

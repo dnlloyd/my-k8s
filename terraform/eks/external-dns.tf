@@ -36,6 +36,8 @@ module "irsa_external_dns" {
 }
 
 resource "kubernetes_namespace" "web" {
+  depends_on = [module.eks]
+
   metadata {
     name = var.web_namespace
   }
@@ -56,6 +58,8 @@ resource "kubernetes_service_account" "external_dns" {
 }
 
 resource "kubernetes_cluster_role" "external_dns" {
+  depends_on = [module.eks]
+  
   metadata {
     name = var.external_dns_sa_name
     labels = {
