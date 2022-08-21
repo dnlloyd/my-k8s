@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: web-skp
+  name: web-skp
+  namespace: www
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: web-skp
+  minReadySeconds: 5
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: web-skp
+    spec:
+      containers:
+      - image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp:0.3.0
+        name: web-skp
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+      imagePullSecrets:
+        - name: regcred

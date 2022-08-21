@@ -222,34 +222,6 @@ module "eks" {
   }
 }
 
-# locals {
-#   node_group_resources = flatten([
-#     for node_group in module.eks.eks_managed_node_groups:  node_group.node_group_autoscaling_group_names
-#   ])
-# }
-
-# output "zz_output" {
-#   # value = [for autoscaling_group in local.node_group_resources.autoscaling_groups: autoscaling_group.name]
-#   value = local.node_group_resources
-# }
-
-# resource "aws_autoscaling_group_tag" "eks_node_groups_asgs" {
-#   for_each = toset(local.node_group_resources)
-
-#   autoscaling_group_name = each.value
-
-#   tag {
-#     key   = "AsgTagTestHardCoded"
-#     value = "true"
-
-#     propagate_at_launch = false
-#   }
-
-#   depends_on = [
-#     module.eks
-#   ]
-# }
-
 # KMS key for secret envelope encryption
 resource "aws_kms_key" "eks" {
   description = "EKS Secret Encryption Key for ${local.cluster_name}"
