@@ -1,6 +1,8 @@
 
 # Web SKP
 
+![my-k8s-app](my-k8s-app.png)
+
 * Nginx web container
 * AWS load balancer
 * AWS Route53 record

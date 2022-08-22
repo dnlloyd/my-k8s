@@ -23,8 +23,9 @@
 * Certificate management
 * ~~HPA~~
 * Better metrics than metrics server
+  * And automate with cluster start
 * Keda
-* Cluster autoscaling
+* EKS Cluster autoscaling
 * Config
   * ~~kubectl apply~~
   * ~~Helm~~
@@ -43,3 +44,6 @@
 * K8s upgrade
   * HA manual 
   * EKS
+* Canary deployments
+  * https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#canary-deployments
+* Persistent storage

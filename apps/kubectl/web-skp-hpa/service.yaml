@@ -1,7 +1,7 @@
 apiVersion: v1	
 kind: Service	
 metadata:	
-  name: web-skp
+  name: skp
   annotations:
     external-dns.alpha.kubernetes.io/hostname: skp.fhcdan.net
   namespace: www
@@ -11,4 +11,4 @@ spec:
   - port: 80	
     targetPort: 80	
   selector:	
-    run: web-skp
+    app: skp
