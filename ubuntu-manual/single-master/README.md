@@ -9,9 +9,54 @@
 
 [https://phoenixnap.com/kb/install-kubernetes-on-ubuntu](https://phoenixnap.com/kb/install-kubernetes-on-ubuntu)
 
+[All]
 ```
+sudo apt-get update
+sudo apt-get install docker.io
+docker --version
+sudo systemctl enable docker
+sudo systemctl status docker
+```
+
+[All]
+```
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+sudo apt-get install kubeadm kubelet kubectl
+sudo apt-mark hold kubeadm kubelet kubectl
+kubeadm version
+sudo swapoff -a
+```
+
+[Master]
+```
+sudo hostnamectl set-hostname master
+exit
+
+sudo kubeadm init \
+  --pod-network-cidr=10.244.0.0/16 \
+  --control-plane-endpoint "myk8s.fhcdan.net:6443"
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl get pods --all-namespaces
+```
+
+[Workers]
+```
+sudo hostnamectl set-hostname worker-<XX>
+exit
+
 sudo kubeadm join 172.31.0.88:6443 --token XXXXXXXXXXX \
 --discovery-token-ca-cert-hash sha256:XXXXXXXXXXXXXXX
+```
+
+[Master]
+```
+kubectl get nodes
 ```
 
 ### Supplemental
@@ -19,17 +64,15 @@ sudo kubeadm join 172.31.0.88:6443 --token XXXXXXXXXXX \
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
 
-## Public endpoint connectivity
+## Admin API connectivity
 
 [optional-controlling-your-cluster-from-machines-other-than-the-control-plane-node](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#optional-controlling-your-cluster-from-machines-other-than-the-control-plane-node)
 
-Add config from `<control-plane-host>:/etc/kubernetes/admin.conf` to `~/.kube/config` but change server to `server: https://kubernetes:6443`
+Add config from `<control-plane-host>:/etc/kubernetes/admin.conf` to `~/.kube/config`
 
-```
-vi /etc/hosts
+Or add a user via:
 
-18.207.106.154  kubernetes # Public IP address of master node that matches admin certificate
-```
+[rbac/README.md](../../rbac/README.md)
 
 ## Issues
 

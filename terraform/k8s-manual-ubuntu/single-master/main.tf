@@ -1,5 +1,9 @@
 variable "worker_count" {
-  default = 1
+  default = 2
+}
+
+variable "use_nlb" {
+  default = false
 }
 
 data "aws_ami" "ubuntu" {
@@ -19,7 +23,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "master" {
   ami = data.aws_ami.ubuntu.id
-  instance_type = "t3.small" # Do not use smaller than a t3.small
+  instance_type = "t3.medium" # Do not use smaller than a t3.small
   associate_public_ip_address = true
   key_name = "fh-sandbox"
 
@@ -47,7 +51,7 @@ resource "aws_instance" "workers" {
   ]
 
   tags = {
-    Name = "ubu-k8s-worker-0${var.worker_count}"
+    Name = "ubu-k8s-worker-0${count.index + 1}"
   }
 }
 

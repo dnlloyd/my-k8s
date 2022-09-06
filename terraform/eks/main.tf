@@ -51,6 +51,11 @@ locals {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
+
+  tags_nodegroup = {
+    "k8s.io/cluster-autoscaler/enabled" = "true"
+    "k8s.io/cluster-autoscaler/${local.cluster_name}" = "owned"
+  }
 }
 
 data "aws_eks_cluster_auth" "eks" {
@@ -114,7 +119,7 @@ module "eks" {
     {
       userarn = "arn:aws:iam::458891109543:user/dnlloyd"
       username = "dnlloyd"
-      groups = ["read-only"]
+      groups = ["system:masters"]
     },
   ]
 
@@ -216,8 +221,7 @@ module "eks" {
       # A list of security group IDs to associate
       # vpc_security_group_ids  = [aws_security_group.additional.id]
 
-      # TODO: Enforce compliance tags at the module level
-      tags = local.additional_tags
+      tags = merge(local.additional_tags, local.tags_nodegroup)
     }
   }
 }

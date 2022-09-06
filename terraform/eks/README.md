@@ -4,7 +4,6 @@
 aws eks update-kubeconfig --region us-east-1 --name my-eks-1-22 --alias my-eks-1-22
 ```
 
-
 ```
 kubectl config current-context
 ```

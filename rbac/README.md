@@ -15,9 +15,10 @@ openssl genrsa -out dan.key 2048
 
 Create a CertificateSigningRequest and submit it to a Kubernetes Cluster via kubectl
 ```
-openssl req -new -key dan.key -out dan.csr -subj "/CN=dan"
+openssl req -new -key dan.key -out dan.csr -subj "/CN=dan/O=my-k8s-admin"
 openssl base64 -e -A -in dan.csr
-
+```
+```
 kubectl apply -f csr-dan.yaml
 ```
 

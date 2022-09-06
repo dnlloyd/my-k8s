@@ -3,8 +3,8 @@ kind: CertificateSigningRequest
 metadata:
   name: dan
 spec:
-  request: XXXXXXXXXXXXXXXXXX
+  request: xxx
   signerName: kubernetes.io/kube-apiserver-client
-  expirationSeconds: 86400  # one day
+  expirationSeconds: 604800  # one week
   usages:
   - client auth

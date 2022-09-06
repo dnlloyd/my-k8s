@@ -50,7 +50,9 @@ resource "aws_acm_certificate_validation" "main" {
   validation_record_fqdns = [aws_route53_record.acm_validation.fqdn]
 }
 
-##### LB ###############################################
+####################################################
+# Load balancer
+
 resource "aws_lb" "k8s_api" {
   name = "ubu-k8s-api-server"
   load_balancer_type = "network"
