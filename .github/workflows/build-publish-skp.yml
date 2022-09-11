@@ -29,7 +29,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: web-skp
-        IMAGE_TAG: '0.5.0'
+        IMAGE_TAG: '0.6.0'
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./docker/web-skp
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
