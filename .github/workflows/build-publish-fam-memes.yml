@@ -29,7 +29,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: web-fam-meme
-        IMAGE_TAG: '0.2.0'
+        IMAGE_TAG: '0.1.0'
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./docker/web-fam-meme
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
