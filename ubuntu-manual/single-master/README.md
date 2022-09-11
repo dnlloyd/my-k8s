@@ -59,6 +59,10 @@ sudo kubeadm join 172.31.0.88:6443 --token XXXXXXXXXXX \
 kubectl get nodes
 ```
 
+### ECR 
+
+[ECR credentials](../../terraform/ecr/README.md)
+
 ### Supplemental
 
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
