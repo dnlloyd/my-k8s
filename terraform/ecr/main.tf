@@ -13,7 +13,7 @@ resource "aws_ecr_repository" "web_skp" {
   image_tag_mutability = "MUTABLE"
 }
 
-resource "aws_ecr_repository" "web_family_meme" {
-  name = "web-family-meme"
+resource "aws_ecr_repository" "web_fam_meme" {
+  name = "web-fam-meme"
   image_tag_mutability = "MUTABLE"
 }
