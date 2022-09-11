@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'docker/web-fam-meme/**'
+      - './docker/web-fam-meme/**'
 
 jobs:
   build:
