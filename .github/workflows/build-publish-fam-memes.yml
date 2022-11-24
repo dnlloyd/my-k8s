@@ -4,6 +4,7 @@ on:
     branches: [ master ]
     paths:
       - 'docker/web-fam-meme/**'
+      - '.github/workflows/build-pub-ubu-debu-dockerhub.yml'
 
 jobs:
   build:
