@@ -10,10 +10,10 @@ Shell
 kubectl exec -it ubuntu -- /bin/bash
 ```
 
-Curl
+Install additional tools
 
 ```
-apt update && apt install curl -y
+apt update && apt install curl netcat traceroute dnsutils -y
 ```
 
 ## ref

@@ -236,4 +236,3 @@ resource "aws_kms_key" "eks" {
     Note = "Created by terraform for EKS cluster ${local.cluster_name}"
   }
 }
-

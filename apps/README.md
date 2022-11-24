@@ -57,14 +57,7 @@ https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephe
 Pod definitions:
 [kubectl/ubuntu-debug-pod](kubectl/ubuntu-debug-pod)
 
-Shell
-
 ```
+kubectl apply -f pod.yaml
 kubectl exec -it ubuntu -- /bin/bash
-```
-
-curl
-
-```
-apt update && apt install curl -y
 ```
