@@ -4,6 +4,7 @@ on:
     branches: [ master ]
     paths:
       - 'docker/ubu-debug/**'
+      - '.github/workflows/build-pub-ubu-debu-dockerhub.yml'
 
 jobs:
   build:
