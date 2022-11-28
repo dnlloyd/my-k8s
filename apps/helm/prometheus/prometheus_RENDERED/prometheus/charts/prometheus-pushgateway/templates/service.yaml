@@ -1,0 +1,23 @@
+---
+# Source: prometheus/charts/prometheus-pushgateway/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-18-prometheus-pushgateway
+  annotations:
+    prometheus.io/probe: pushgateway
+  labels:
+    app: prometheus-pushgateway
+    chart: prometheus-pushgateway-1.21.0
+    heritage: Helm
+    release: prometheus-18
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9091
+      targetPort: 9091
+      protocol: TCP
+      name: http
+  selector:
+    app: prometheus-pushgateway
+    release: prometheus-18

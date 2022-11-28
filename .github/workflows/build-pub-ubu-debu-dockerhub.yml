@@ -27,5 +27,3 @@ jobs:
         context: ./docker/ubu-debug/
         push: true
         tags: dnlloyd/ubu-debug:latest
-
-# Force execute 1

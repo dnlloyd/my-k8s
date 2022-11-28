@@ -49,10 +49,11 @@ helm -n www uninstall web-j4
 helm template web-j4 web-j4/ --output-dir web-j4_RENDERED
 ```
 
-## Deploy a Linux debug container
+## Debugging container issues
 
-Try this first:
-https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container
+[https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/)
+
+### Deploy an Ubuntu debug pod
 
 Pod definitions:
 [kubectl/ubuntu-debug-pod](kubectl/ubuntu-debug-pod)
@@ -60,4 +61,23 @@ Pod definitions:
 ```
 kubectl apply -f pod.yaml
 kubectl exec -it ubuntu -- /bin/bash
+```
+
+### Debugging with an ephemeral debug container
+
+https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container
+
+You have to enable the k8s EphemeralContainers feature gate in your cluster. At the moment this is still alpha and therefore not enabled by default.
+
+https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/
+
+You probably also want to enable Process Namespace Sharing in your pod.
+
+https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/
+
+Note however, that all of this has repercussions in your cluster, to things like security, so make sure you understand those tradeoffs.
+
+
+```
+kubectl -n <namespace> debug -it <Container to debug> --image=dnlloyd/ubu-debug:latest --target=<Container to debug>
 ```

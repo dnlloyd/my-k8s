@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ubuntu
+  name: ubu-debug
   labels:
-    app: ubuntu
+    app: ubu-debug
 spec:
   containers:
-  - image: ubuntu
+  - image: dnlloyd/ubu-debug
     command:
       - "sleep"
       - "604800"
     imagePullPolicy: IfNotPresent
-    name: ubuntu
+    name: ubu-debug
   restartPolicy: Always

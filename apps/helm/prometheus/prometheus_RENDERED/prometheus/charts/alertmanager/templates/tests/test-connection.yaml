@@ -1,0 +1,21 @@
+---
+# Source: prometheus/charts/alertmanager/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "prometheus-18-alertmanager-test-connection"
+  labels:
+    helm.sh/chart: alertmanager-0.22.0
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/instance: prometheus-18
+    app.kubernetes.io/version: "v0.24.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['prometheus-18-alertmanager:9093']
+  restartPolicy: Never

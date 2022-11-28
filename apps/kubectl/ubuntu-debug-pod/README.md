@@ -7,13 +7,7 @@ kubectl apply -f pod.yaml
 Shell
 
 ```
-kubectl exec -it ubuntu -- /bin/bash
-```
-
-Install additional tools
-
-```
-apt update && apt install curl netcat traceroute dnsutils -y
+kubectl exec -it ubu-debug -- /bin/bash
 ```
 
 ## ref

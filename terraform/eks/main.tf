@@ -1,8 +1,8 @@
 locals {
   cluster_version = "1.22"
-  cluster_name = "my-eks-${replace(local.cluster_version, ".", "-")}"
+  cluster_name = "my-k8s"
   vpc_id = "vpc-065b33a8baa73e2a3"
-  instance_type = "t3.medium"
+  instance_type = "m5.2xlarge"
   ec2_key_pair_name = "fh-sandbox"
   disk_size = 40
 
@@ -177,6 +177,7 @@ module "eks" {
       # enable_bootstrap_user_data = true
       # bootstrap_extra_args = "--container-runtime containerd --kubelet-extra-args '--max-pods=20'"
 
+      # 1.23 or earlier
       # Enable containerd, ssm
       # Explicitly set container runtime on EKS with Kubernetes version 1.22:
       # Ref: https://github.com/terraform-aws-modules/terraform-aws-eks/tree/v18.26.1/examples/eks_managed_node_group#container-runtime--user-data
@@ -196,6 +197,12 @@ module "eks" {
       sed -i '/^set -o errexit/a\\nsource /etc/profile.d/bootstrap.sh' /etc/eks/bootstrap.sh
       EOT
 
+      # 1.24 or later
+      # pre_bootstrap_user_data = <<-EOT
+      # export CONTAINER_RUNTIME="containerd"
+      # export USE_MAX_PODS=false
+      # EOT
+
       update_config = {
         max_unavailable_percentage = 50 # or set `max_unavailable`
       }
@@ -205,8 +212,6 @@ module "eks" {
       iam_role_use_name_prefix = false
       iam_role_description = "${local.cluster_name} EKS managed node group role"
       iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
-
-      # TODO: Enforce compliance tags at the module level
       iam_role_tags = local.additional_tags
       
       create_security_group = true
@@ -234,5 +239,13 @@ resource "aws_kms_key" "eks" {
   tags = {
     Name = "${local.cluster_name}-key"
     Note = "Created by terraform for EKS cluster ${local.cluster_name}"
+  }
+}
+
+resource "kubernetes_namespace" "prometheus" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "prometheus"
   }
 }
