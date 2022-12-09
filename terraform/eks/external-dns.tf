@@ -3,7 +3,7 @@ variable "external_dns_sa_name" {
 }
 
 variable "web_namespace" {
-  default = "www"
+  default = "kube-system"
 }
 
 variable "domain_name" {
@@ -35,16 +35,16 @@ module "irsa_external_dns" {
   }
 }
 
-resource "kubernetes_namespace" "web" {
-  depends_on = [module.eks]
+# resource "kubernetes_namespace" "web" {
+#   depends_on = [module.eks]
 
-  metadata {
-    name = var.web_namespace
-  }
-}
+#   metadata {
+#     name = var.web_namespace
+#   }
+# }
 
 resource "kubernetes_service_account" "external_dns" {
-  depends_on = [kubernetes_namespace.web]
+  # depends_on = [kubernetes_namespace.web]
 
   automount_service_account_token = true
 

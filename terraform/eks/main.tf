@@ -1,5 +1,5 @@
 locals {
-  cluster_version = "1.22"
+  cluster_version = "1.24"
   cluster_name = "my-k8s"
   vpc_id = "vpc-065b33a8baa73e2a3"
   instance_type = "m5.2xlarge"
@@ -167,7 +167,7 @@ module "eks" {
       desired_size = 3
 
       instance_types = [local.instance_type]
-      capacity_type = "SPOT"
+      capacity_type = "ON_DEMAND"
       # disk_size = local.disk_size # Todo: this gets trumped by volume_size in LC
 
       # Specify volumes to attach to the instance besides the volumes specified by the AMI
@@ -185,23 +185,23 @@ module "eks" {
       # Ref: https://docs.aws.amazon.com/eks/latest/userguide/dockershim-deprecation.html
       # Setting max pod to 110
       # Ref: https://aws.amazon.com/blogs/containers/amazon-vpc-cni-increases-pods-per-node-limits/
-      pre_bootstrap_user_data = <<-EOT
-      #!/bin/bash
-      set -ex
-      cat <<-EOF > /etc/profile.d/bootstrap.sh
-      export CONTAINER_RUNTIME="containerd"
-      export USE_MAX_PODS=false
-      export KUBELET_EXTRA_ARGS="--max-pods=110"
-      EOF
-      # Source extra environment variables in bootstrap script
-      sed -i '/^set -o errexit/a\\nsource /etc/profile.d/bootstrap.sh' /etc/eks/bootstrap.sh
-      EOT
-
-      # 1.24 or later
       # pre_bootstrap_user_data = <<-EOT
+      # #!/bin/bash
+      # set -ex
+      # cat <<-EOF > /etc/profile.d/bootstrap.sh
       # export CONTAINER_RUNTIME="containerd"
       # export USE_MAX_PODS=false
+      # export KUBELET_EXTRA_ARGS="--max-pods=110"
+      # EOF
+      # # Source extra environment variables in bootstrap script
+      # sed -i '/^set -o errexit/a\\nsource /etc/profile.d/bootstrap.sh' /etc/eks/bootstrap.sh
       # EOT
+
+      # 1.24 or later
+      pre_bootstrap_user_data = <<-EOT
+      export CONTAINER_RUNTIME="containerd"
+      export USE_MAX_PODS=false
+      EOT
 
       update_config = {
         max_unavailable_percentage = 50 # or set `max_unavailable`
@@ -219,8 +219,6 @@ module "eks" {
       security_group_use_name_prefix = false
       security_group_description = "${local.cluster_name} EKS managed node group security group"
       security_group_rules = local.node_sg_rules
-
-      # TODO: Enforce compliance tags at the module level
       security_group_tags = local.additional_tags
 
       # A list of security group IDs to associate
@@ -247,5 +245,21 @@ resource "kubernetes_namespace" "prometheus" {
 
   metadata {
     name = "prometheus"
+  }
+}
+
+resource "kubernetes_namespace" "dev" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "dev"
+  }
+}
+
+resource "kubernetes_namespace" "prod" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "prod"
   }
 }
