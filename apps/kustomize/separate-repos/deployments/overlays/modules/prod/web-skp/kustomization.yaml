@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases: # TODO: move to git ref
+- git@github.com:dnlloyd/web-skp.git/deploy/bases?=main
+
+namespace: prod
+
+patchesStrategicMerge:
+- service.yaml
+- deployment.yaml
