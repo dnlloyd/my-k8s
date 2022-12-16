@@ -1,5 +1,5 @@
 locals {
-  cluster_version = "1.24"
+  cluster_version = "1.22"
   cluster_name = "my-k8s"
   vpc_id = "vpc-065b33a8baa73e2a3"
   instance_type = "m5.2xlarge"
@@ -252,5 +252,13 @@ resource "kubernetes_namespace" "prometheus" {
 
   metadata {
     name = "prometheus"
+  }
+}
+
+resource "kubernetes_namespace" "argocd" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "argocd"
   }
 }

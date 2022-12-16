@@ -2,7 +2,17 @@
 
 ## Install
 
-Install
+### Install recent
+
+- external DNS: https://argo.fhcdan.net
+- namespace created by Terraform
+- argocd service set to `type: LoadBalancer`
+
+```
+kubectl -n argocd apply -f install-argocd.yaml
+```
+
+### Install latest
 
 ```
 kubectl create namespace argocd
@@ -15,54 +25,50 @@ Access via LB
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
+## Access
 
-Get default admin pass
+### Get default admin pass
 
 ```
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
 
-login and update password
+### login and update password
 
+recent
+
+```
+argocd login argo.fhcdan.net
+
+```
+
+latest
 ```
 kubectl get svc -n argocd
 
 argocd login xxx.us-east-1.elb.amazonaws.com
+```
 
+update password (keepassxc)
+
+```
 argocd account update-password
 ```
 
-## Deploy application
+## Deploy web skp
 
 ```
-kubectl create namespace www
-```
+kubectl config set-context --current --namespace=argocd
 
-Create secret for ECR
-
-```
-kubectl create secret docker-registry regcred \
-  --docker-server=xxx.dkr.ecr.us-east-1.amazonaws.com \
-  --docker-username=AWS \
-  --docker-password=$(aws ecr get-login-password) \
-  --namespace=www
-```
-
-Create web app
-
-```
-argocd app create www \
---repo https://github.com/dnlloyd/my-eks.git \
---path apps/argo-cd/www \
---dest-server https://kubernetes.default.svc \
---dest-namespace www
+kubectl apply -f web-skp-app.yaml
 ```
 
 ## Reference
 
 https://argo-cd.readthedocs.io/en/stable/getting_started/
 
+https://redhat-scholars.github.io/argocd-tutorial/argocd-tutorial/03-kustomize.html
+
 https://argocd-image-updater.readthedocs.io/en/stable/
 
 https://www.linkedin.com/pulse/automatic-image-update-using-argocd-satyam-kumar?trk=articles_directory
-
