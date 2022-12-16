@@ -2,10 +2,15 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 bases:
-- git@github.com:dnlloyd/web-skp.git/deploy/bases?=main
+- git@github.com:dnlloyd/web-skp.git/deploy/bases?ref=v1.0.1
 
 namespace: dev
 
+images:
+- name: web-skp
+  newName: 458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp
+  newTag: 0.6.0
+
 patchesStrategicMerge:
 - service.yaml
-- deployment.yaml
+
