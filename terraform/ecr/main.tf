@@ -17,3 +17,8 @@ resource "aws_ecr_repository" "web_fam_meme" {
   name = "web-fam-meme"
   image_tag_mutability = "MUTABLE"
 }
+
+resource "aws_ecr_repository" "flask_auth" {
+  name = "flask-auth"
+  image_tag_mutability = "MUTABLE"
+}

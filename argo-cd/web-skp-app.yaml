@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps/kustomize/single-repo/deployments/overlays/modules/dev/web-skp
+    path: apps/kustomize/separate-repos/deployments/overlays/modules/dev/web-skp
     repoURL: https://github.com/dnlloyd/my-k8s
     targetRevision: master
   syncPolicy:

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-auth
+  labels:
+    app: flask-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-auth
+  template:
+    metadata:
+      labels:
+        app: flask-auth
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      serviceAccountName: default
+      securityContext:
+        null
+      containers:
+        - name: flask-auth
+          securityContext:
+            null
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/flask-auth:0.1.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            null
