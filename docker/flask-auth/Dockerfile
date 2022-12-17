@@ -21,7 +21,7 @@ ENV FLASK_DEBUG 1
 
 EXPOSE 80
 
-ENV NEW_RELIC_CONFIG_FILE=newrelic.ini
+ENV NEW_RELIC_CONFIG_FILE=/etc/newrelic/newrelic.ini
 
 ENTRYPOINT ["newrelic-admin", "run-program"]
 
