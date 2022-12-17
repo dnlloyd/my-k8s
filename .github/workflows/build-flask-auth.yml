@@ -4,6 +4,7 @@ on:
     branches: [ master ]
     paths:
       - 'docker/flask-auth/**'
+      - '.github/workflows/build-flask-auth.yml'
 
 jobs:
   build:
