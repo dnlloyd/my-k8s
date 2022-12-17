@@ -3,8 +3,10 @@ FROM python:3.10-alpine AS builder
 WORKDIR /code
 COPY flask_auth_app /code
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r requirements.txt
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     pip install -r requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 # ENV NEW_RELIC_LOG=stdout \
 #     NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true \
