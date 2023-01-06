@@ -162,9 +162,9 @@ module "eks" {
 
       subnet_ids = local.subnet_ids
 
-      min_size = 3
-      max_size = 6
-      desired_size = 3
+      min_size = 1
+      max_size = 4
+      desired_size = 2
 
       instance_types = [local.instance_type]
       capacity_type = "ON_DEMAND"
@@ -175,7 +175,7 @@ module "eks" {
 
       # ami_id = data.aws_ami.eks_default.image_id
       # enable_bootstrap_user_data = true
-      # bootstrap_extra_args = "--container-runtime containerd --kubelet-extra-args '--max-pods=20'"
+      bootstrap_extra_args = "--kubelet-extra-args '--max-pods=110' '--node-labels=node-restriction.kubernetes.io/nodegroup=primary'"
 
       # 1.23 or earlier
       # Enable containerd, ssm
@@ -227,6 +227,10 @@ module "eks" {
       tags = merge(local.additional_tags, local.tags_nodegroup)
     }
   }
+
+  self_managed_node_groups = {
+    self_managed_secondary = local.self_managed_secondary
+  }
 }
 
 # KMS key for secret envelope encryption
@@ -269,5 +273,21 @@ resource "kubernetes_namespace" "argocd" {
 
   metadata {
     name = "argocd"
+  }
+}
+
+resource "kubernetes_namespace" "vault" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "vault"
+  }
+}
+
+resource "kubernetes_namespace" "external-secrets" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "external-secrets"
   }
 }

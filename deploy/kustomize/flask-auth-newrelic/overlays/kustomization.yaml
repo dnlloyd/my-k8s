@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../bases
+
+namespace: dev
+
+patchesStrategicMerge:
+- service.yaml
+- deployment.yaml
+
+# generators:
+# - new-relic-secret-generator.yaml
+
+resources:
+- new-relic-secret.yaml
+
+configMapGenerator:
+- name: newrelic-config
+  files:
+  - newrelic.ini

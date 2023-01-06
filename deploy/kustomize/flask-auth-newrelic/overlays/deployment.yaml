@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-auth
+spec:
+  template:
+    spec:
+      containers:
+        - name: flask-auth
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/flask-auth:0.1.0"
+          envFrom:
+            - secretRef:
+                name: new-relic-license-key
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/newrelic
+      volumes:
+      - name: config-volume
+        configMap:
+          name: newrelic-config
