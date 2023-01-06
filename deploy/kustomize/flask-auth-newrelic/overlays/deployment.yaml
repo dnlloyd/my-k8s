@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: flask-auth
 spec:
+  replicas: 3
   template:
     spec:
       containers:

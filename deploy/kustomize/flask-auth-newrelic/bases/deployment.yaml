@@ -23,7 +23,7 @@ spec:
         - name: flask-auth
           securityContext:
             null
-          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/flask-auth:0.1.0"
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/flask-auth:latest"
           imagePullPolicy: Always
           ports:
             - name: http
@@ -39,3 +39,6 @@ spec:
               port: http
           resources:
             null
+          volumeMounts:
+              - name: flask-auth-data-disk
+                mountPath: /opt/secupi/flink/data

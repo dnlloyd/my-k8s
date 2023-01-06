@@ -3,6 +3,9 @@ FROM python:3.10-alpine AS builder
 WORKDIR /code
 COPY flask_auth_app /code
 
+RUN mkdir /data
+VOLUME /data
+
 # RUN --mount=type=cache,target=/root/.cache/pip \
 #     pip install -r requirements.txt
 
