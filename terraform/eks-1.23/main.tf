@@ -1,5 +1,5 @@
 locals {
-  cluster_version = "1.23"
+  cluster_version = "1.24"
   cluster_name = "my-k8s-1-23"
   vpc_id = "vpc-065b33a8baa73e2a3"
   instance_type = "m5.2xlarge"

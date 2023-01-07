@@ -40,5 +40,9 @@ spec:
           resources:
             null
           volumeMounts:
-              - name: flask-auth-data-disk
-                mountPath: /opt/secupi/flink/data
+            - name: flask-auth-data-disk
+              mountPath: /data
+      volumes:
+        - name: flask-auth-data-disk
+          persistentVolumeClaim:
+            claimName: "flask-auth-data-disk"

@@ -1,6 +1,6 @@
 # Notes
 
-## Basic kubectl
+## kubectl
 
 ```
 kubectl -n www get nodes
@@ -9,7 +9,7 @@ kubectl -n www get svc
 kubectl -n www get serviceaccounts
 ```
 
-## Deploy with kubectl
+### Deploy with kubectl
 
 ```
 kubectl apply -f deployment.yaml
@@ -21,7 +21,48 @@ kubectl delete -f service.yaml
 kubectl delete -f deployment.yaml
 ```
 
-## Create shell in container (pod)
+## Helm
+
+```
+helm create web-j4
+```
+
+### Deploy with Helm
+
+```
+helm -n www install web-j4 ./web-j4
+helm -n www upgrade web-j4  ./web-j4
+helm -n www uninstall web-j4
+```
+
+### Render Helm
+```
+helm template web-j4 web-j4/ --output-dir web-j4_RENDERED
+```
+
+## Kustomize
+
+https://www.densify.com/kubernetes-tools/kustomize
+
+```
+brew install kustomize
+```
+
+```
+kustomize build overlays/fhcdan.net
+kubectl apply -k overlays/fhcdan.net
+kubectl delete -k overlays/fhcdan.net
+```
+
+```
+kustomize build overlays/daniel.fogops.io
+kubectl apply -k overlays/daniel.fogops.io
+kubectl delete -k overlays/daniel.fogops.io
+```
+
+## Troubleshooting
+
+### Create shell in container (pod)
 
 ```
 kubectl -n www exec --stdin --tty <POD-ID> -- /bin/bash
@@ -30,26 +71,7 @@ kubectl -n www exec --stdin --tty <POD-ID> -- /bin/bash
 curl http://<Deployment-Name>
 ```
 
-## Helm
-
-```
-helm create web-j4
-```
-
-## Deploy with Helm
-
-```
-helm -n www install web-j4 ./web-j4
-helm -n www upgrade web-j4  ./web-j4
-helm -n www uninstall web-j4
-```
-
-## Render Helm
-```
-helm template web-j4 web-j4/ --output-dir web-j4_RENDERED
-```
-
-## Debugging container issues
+### Debugging container issues
 
 [https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/](https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/)
 
@@ -81,3 +103,4 @@ Note however, that all of this has repercussions in your cluster, to things like
 ```
 kubectl -n <namespace> debug -it <Container to debug> --image=dnlloyd/ubu-debug:latest --target=<Container to debug>
 ```
+

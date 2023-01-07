@@ -1,4 +1,5 @@
 # https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
+# Kubernetes 1.23 and higher
 
 module "irsa_ebs_csi" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"

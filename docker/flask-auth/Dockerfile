@@ -3,6 +3,7 @@ FROM python:3.10-alpine AS builder
 WORKDIR /code
 COPY flask_auth_app /code
 
+# This will eventually be the DB data dir
 RUN mkdir /data
 VOLUME /data
 
