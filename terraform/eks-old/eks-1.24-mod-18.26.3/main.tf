@@ -13,7 +13,7 @@ locals {
   ]
 
   additional_tags = {
-    CommunityModuleVersion = "19.5.1"
+    CommunityModuleVersion = "18.26.3"
     K8sVersion = local.cluster_version
   }
 
@@ -66,36 +66,17 @@ module "eks" {
   create = true
 
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.5.1"
+  version = "18.26.3"
 
   cluster_name = local.cluster_name
+  
   cluster_version = local.cluster_version
-  cluster_endpoint_public_access = true
-  cluster_endpoint_private_access = true
 
   vpc_id = local.vpc_id
   subnet_ids = local.subnet_ids
 
-  cluster_addons = {
-    coredns = {
-      most_recent = true
-    }
-    kube-proxy = {
-      most_recent = true
-    }
-    vpc-cni = {
-      most_recent              = true
-      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-      configuration_values = jsonencode({
-        env = {
-          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-          ENABLE_PREFIX_DELEGATION = "true"
-          WARM_PREFIX_TARGET       = "1"
-        }
-      })
-    }
-  }
-
+  cluster_endpoint_public_access = true
+  cluster_endpoint_private_access = true
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cloudwatch_log_group_retention_in_days  = 1
 
@@ -110,11 +91,12 @@ module "eks" {
     }
   }
 
-  create_kms_key = false
-  cluster_encryption_config = {
-    resources = ["secrets"]
-    provider_key_arn = aws_kms_key.eks.arn
-  }
+  cluster_encryption_config = [
+    {
+      provider_key_arn = aws_kms_key.eks.arn
+      resources = ["secrets"]
+    }
+  ]
 
   tags = local.additional_tags
   
@@ -181,8 +163,8 @@ module "eks" {
       subnet_ids = local.subnet_ids
 
       min_size = 1
-      max_size = 5
-      desired_size = 3
+      max_size = 4
+      desired_size = 2
 
       instance_types = [local.instance_type]
       capacity_type = "ON_DEMAND"
@@ -192,8 +174,8 @@ module "eks" {
       # block_device_mappings = local.node_block_device # Todo: This requires a custom launch template
 
       # ami_id = data.aws_ami.eks_default.image_id
-      enable_bootstrap_user_data = true
-      bootstrap_extra_args = "--kubelet-extra-args '--max-pods=110' '--node-labels=node-restriction.kubernetes.io/nodegroup=managed'"
+      # enable_bootstrap_user_data = true
+      bootstrap_extra_args = "--kubelet-extra-args '--max-pods=110' '--node-labels=node-restriction.kubernetes.io/nodegroup=primary'"
 
       # 1.23 or earlier
       # Enable containerd, ssm
@@ -222,16 +204,14 @@ module "eks" {
       EOT
 
       update_config = {
-        max_unavailable_percentage = 75 # or set `max_unavailable`
+        max_unavailable_percentage = 50 # or set `max_unavailable`
       }
 
       create_iam_role = true
       iam_role_name = "${local.cluster_name}-eks-managed-node-group"
       iam_role_use_name_prefix = false
       iam_role_description = "${local.cluster_name} EKS managed node group role"
-      iam_role_additional_policies = {
-        AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-      }
+      iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
       iam_role_tags = local.additional_tags
       
       create_security_group = true
@@ -248,9 +228,9 @@ module "eks" {
     }
   }
 
-  # self_managed_node_groups = {
-  #   self_managed_secondary = local.self_managed_secondary
-  # }
+  self_managed_node_groups = {
+    self_managed_secondary = local.self_managed_secondary
+  }
 }
 
 # KMS key for secret envelope encryption
@@ -309,21 +289,5 @@ resource "kubernetes_namespace" "external-secrets" {
 
   metadata {
     name = "external-secrets"
-  }
-}
-
-module "vpc_cni_irsa" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
-
-  role_name_prefix      = "${local.cluster_name}-VPC-CNI-IRSA"
-  attach_vpc_cni_policy = true
-  vpc_cni_enable_ipv6   = true
-
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:aws-node"]
-    }
   }
 }

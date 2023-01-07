@@ -6,7 +6,6 @@ metadata:
 data:
   newrelic.ini: |
     [newrelic]
-    license_key = 5b4dc2384ffbb51b05e5eb8ce50896c8afe5NRAL
     app_name = flask-auth
     distributed_tracing.enabled = true
     monitor_mode = true

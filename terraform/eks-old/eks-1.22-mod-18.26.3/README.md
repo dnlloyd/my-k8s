@@ -1,7 +1,7 @@
 # EKS
 
 ```
-aws eks update-kubeconfig --region us-east-1 --name my-k8s --alias my-k8s
+aws eks update-kubeconfig --region us-east-1 --name my-k8s-1-22 --alias my-k8s-1-22
 ```
 
 ```
