@@ -2,10 +2,10 @@
 #   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 #   version = "5.3.0"
 
-#   role_name = "${module.eks.cluster_id}-IrsaAutoscaler"
+#   role_name = "${module.eks.cluster_name}-IrsaAutoscaler"
 #   role_description = "IRSA role for cluster autoscaler"
 #   attach_cluster_autoscaler_policy = true
-#   cluster_autoscaler_cluster_ids = [module.eks.cluster_id]
+#   cluster_autoscaler_cluster_ids = [module.eks.cluster_name]
 
 #   oidc_providers = {
 #     main = {

@@ -30,18 +30,10 @@ module "irsa_external_dns" {
   oidc_providers = {
     main = {
       provider_arn = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${var.web_namespace}:${var.external_dns_sa_name}"]
+      namespace_service_accounts = ["kube-system:${var.external_dns_sa_name}"]
     }
   }
 }
-
-# resource "kubernetes_namespace" "web" {
-#   depends_on = [module.eks]
-
-#   metadata {
-#     name = var.web_namespace
-#   }
-# }
 
 resource "kubernetes_service_account" "external_dns" {
   # depends_on = [kubernetes_namespace.web]
@@ -50,7 +42,7 @@ resource "kubernetes_service_account" "external_dns" {
 
   metadata {
     name = var.external_dns_sa_name
-    namespace = var.web_namespace
+    namespace = "kube-system"
     annotations = {
       "eks.amazonaws.com/role-arn" = module.irsa_external_dns.iam_role_arn
     }
@@ -103,14 +95,14 @@ resource "kubernetes_cluster_role_binding" "external_dns" {
   subject {
     kind = "ServiceAccount"
     name = kubernetes_service_account.external_dns.metadata.0.name
-    namespace = var.web_namespace
+    namespace = "kube-system"
   }
 }
 
 resource "kubernetes_deployment" "external_dns" {
   metadata {
     name = "external-dns"
-    namespace = var.web_namespace
+    namespace = "kube-system"
     labels = {
       "app.kubernetes.io/name" = var.external_dns_sa_name
     }

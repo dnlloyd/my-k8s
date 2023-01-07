@@ -16,7 +16,7 @@ patchesStrategicMerge:
 
 # until you can get kubectl ksops working
 resources:
-- ../../../deploy-secrets/new-relic-secret.yaml
+- ../../../deploy-secrets/kustomize
 
 configMapGenerator:
 - name: newrelic-config

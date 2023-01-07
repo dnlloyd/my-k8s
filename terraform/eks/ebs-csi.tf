@@ -31,7 +31,7 @@ resource "kubernetes_service_account" "ebs_csi" {
 }
 
 resource "aws_eks_addon" "ebs_csi" {
-  cluster_name      = local.cluster_name
+  cluster_name      = module.eks.cluster_name
   addon_name        = "aws-ebs-csi-driver"
   addon_version     = "v1.13.0-eksbuild.2"
   service_account_role_arn = module.irsa_ebs_csi.iam_role_arn

@@ -59,7 +59,7 @@ locals {
 }
 
 data "aws_eks_cluster_auth" "eks" {
-  name = module.eks.cluster_id
+  name = module.eks.cluster_name
 }
 
 module "eks" {
@@ -191,9 +191,12 @@ module "eks" {
       # Specify volumes to attach to the instance besides the volumes specified by the AMI
       # block_device_mappings = local.node_block_device # Todo: This requires a custom launch template
 
+      # These fields are for when using a custom ID
       # ami_id = data.aws_ami.eks_default.image_id
-      enable_bootstrap_user_data = true
-      bootstrap_extra_args = "--kubelet-extra-args '--max-pods=110' '--node-labels=node-restriction.kubernetes.io/nodegroup=managed'"
+      # enable_bootstrap_user_data = true
+
+      # bootstrap_extra_args = "--kubelet-extra-args '--max-pods=110' '--node-labels=node-restriction.kubernetes.io/nodegroup=managed'"
+      bootstrap_extra_args = "--kubelet-extra-args '--max-pods=110'"
 
       # 1.23 or earlier
       # Enable containerd, ssm
