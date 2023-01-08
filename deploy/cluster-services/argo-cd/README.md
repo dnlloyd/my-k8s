@@ -2,7 +2,7 @@
 
 ## Prereqs
 
-- external DNS: https://argo.fhcdan.net (currently created by Terraform)
+- external DNS (currently deployed by Terraform)
 - namespace (currently created by Terraform)
 
 *argocd service set to `type: LoadBalancer`*
@@ -39,15 +39,37 @@ Password: <above>
 argocd account update-password
 ```
 
-# Deploy web skp
+**Login to the UI**
+
+[https://argo.fhcdan.net](https://argo.fhcdan.net)
+
+# 3.Create web-skp Argo CD application and deploy
 
 ```
 kubectl config set-context --current --namespace=argocd
 
-kubectl apply -f web-skp-app.yaml
+kubectl apply -f apps/application-web-skp-dev.yaml
 ```
 
-# Install latest (from official)
+**Verify**
+
+[http://dev.fhcdan.net/](http://dev.fhcdan.net/)
+
+# 4. Delete the web skp deployment
+
+[https://argo.fhcdan.net/applications](https://argo.fhcdan.net/applications)
+
+# 4. Delete the web-skp Argo CD application
+
+```
+kubectl config set-context --current --namespace=argocd
+
+kubectl delete -f apps/application-web-skp-dev.yaml
+```
+
+# Appendix
+
+## Install latest (stock)
 
 ```
 kubectl create namespace argocd
