@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-skp
+  labels:
+    app: web-skp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-skp
+  template:
+    metadata:
+      labels:
+        app: web-skp
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      serviceAccountName: default
+      securityContext:
+        null
+      containers:
+        - name: web-skp
+          securityContext:
+            null
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp:0.2.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            null

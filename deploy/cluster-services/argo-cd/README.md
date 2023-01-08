@@ -1,18 +1,53 @@
-# Argo CD
+# 1. Install
 
-## Install
+## Prereqs
 
-### Install recent
+- external DNS: https://argo.fhcdan.net (currently created by Terraform)
+- namespace (currently created by Terraform)
 
-- external DNS: https://argo.fhcdan.net
-- namespace created by Terraform
-- argocd service set to `type: LoadBalancer`
+*argocd service set to `type: LoadBalancer`*
 
 ```
 kubectl -n argocd apply -f install-argocd.yaml
 ```
 
-### Install latest
+# 2. Access
+
+## 2.1 Get default admin pass
+
+```
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+```
+
+## 2.2 login and update password
+
+**Login**
+
+```
+argocd login argo.fhcdan.net
+
+```
+
+```
+Username: admin
+Password: <above>
+```
+
+**Update password** (keepassxc)
+
+```
+argocd account update-password
+```
+
+# Deploy web skp
+
+```
+kubectl config set-context --current --namespace=argocd
+
+kubectl apply -f web-skp-app.yaml
+```
+
+# Install latest (from official)
 
 ```
 kubectl create namespace argocd
@@ -25,45 +60,7 @@ Access via LB
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 ```
 
-## Access
-
-### Get default admin pass
-
-```
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-```
-
-### login and update password
-
-recent
-
-```
-argocd login argo.fhcdan.net
-
-```
-
-latest
-```
-kubectl get svc -n argocd
-
-argocd login xxx.us-east-1.elb.amazonaws.com
-```
-
-update password (keepassxc)
-
-```
-argocd account update-password
-```
-
-## Deploy web skp
-
-```
-kubectl config set-context --current --namespace=argocd
-
-kubectl apply -f web-skp-app.yaml
-```
-
-## Reference
+# Reference
 
 https://argo-cd.readthedocs.io/en/stable/getting_started/
 
