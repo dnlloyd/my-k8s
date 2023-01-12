@@ -1,3 +1,5 @@
+# https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/integrations/external_dns/
+
 variable "external_dns_sa_name" {
   default = "external-dns"
 }

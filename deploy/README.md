@@ -9,6 +9,16 @@ kubectl -n www get svc
 kubectl -n www get serviceaccounts
 ```
 
+### Create secret for ECR
+
+```
+kubectl create secret docker-registry regcred \
+  --docker-server=458891109543.dkr.ecr.us-east-1.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password=$(aws ecr get-login-password) \
+  --namespace=dev
+```
+
 ### Deploy with kubectl
 
 ```

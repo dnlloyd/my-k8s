@@ -73,12 +73,13 @@ locals {
     iam_role_tags = local.additional_tags
     iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
 
-    create_security_group = true
-    security_group_name = "${local.cluster_name}-eks-managed-node-group"
-    security_group_use_name_prefix = true
-    security_group_description = "${local.cluster_name} EKS self managed node group security group"
-    security_group_rules = local.node_sg_rules
-    security_group_tags = local.additional_tags
+    # No longer available in this module version
+    # create_security_group = true
+    # security_group_name = "${local.cluster_name}-eks-managed-node-group"
+    # security_group_use_name_prefix = true
+    # security_group_description = "${local.cluster_name} EKS self managed node group security group"
+    # security_group_rules = local.node_sg_rules
+    # security_group_tags = local.additional_tags
 
     tags = local.additional_tags
   }

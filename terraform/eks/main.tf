@@ -17,41 +17,6 @@ locals {
     K8sVersion = local.cluster_version
   }
 
-  node_sg_rules = {
-    ingress_self_all = {
-      description = "Node to node all ports/protocols"
-      protocol    = "-1"
-      from_port   = 0
-      to_port     = 0
-      type        = "ingress"
-      self        = true
-    }
-    egress_all = {
-      description = "Node all egress"
-      protocol    = "-1"
-      from_port   = 0
-      to_port     = 0
-      type        = "egress"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress_cluster_to_nodes = {
-      description                   = "Cluster to Node communication"
-      protocol                      = "tcp"
-      from_port                     = 1025
-      to_port                       = 65535
-      type                          = "ingress"
-      source_cluster_security_group = true
-    }
-    ingress_ssh = {
-      description = "Node ssh ingress"
-      protocol    = "tcp"
-      from_port   = 22
-      to_port     = 22
-      type        = "ingress"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  }
-
   tags_nodegroup = {
     "k8s.io/cluster-autoscaler/enabled" = "true"
     "k8s.io/cluster-autoscaler/${local.cluster_name}" = "owned"
@@ -76,6 +41,8 @@ module "eks" {
   vpc_id = local.vpc_id
   subnet_ids = local.subnet_ids
 
+  create_cni_ipv6_iam_policy = true
+
   cluster_addons = {
     coredns = {
       most_recent = true
@@ -83,17 +50,18 @@ module "eks" {
     kube-proxy = {
       most_recent = true
     }
-    vpc-cni = {
-      most_recent              = true
-      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-      configuration_values = jsonencode({
-        env = {
-          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-          ENABLE_PREFIX_DELEGATION = "true"
-          WARM_PREFIX_TARGET       = "1"
-        }
-      })
-    }
+    # Todo: Currently not working
+    # vpc-cni = {
+    #   most_recent = true
+    #   service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+    #   configuration_values = jsonencode({
+    #     env = {
+    #       # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+    #       ENABLE_PREFIX_DELEGATION = "true"
+    #       WARM_PREFIX_TARGET       = "1"
+    #     }
+    #   })
+    # }
   }
 
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -237,15 +205,16 @@ module "eks" {
       }
       iam_role_tags = local.additional_tags
       
-      create_security_group = true
-      security_group_name = "${local.cluster_name}-eks-managed-node-group"
-      security_group_use_name_prefix = false
-      security_group_description = "${local.cluster_name} EKS managed node group security group"
-      security_group_rules = local.node_sg_rules
-      security_group_tags = local.additional_tags
+      # No longer available in this module version
+      # create_security_group = true
+      # security_group_name = "${local.cluster_name}-eks-managed-node-group-ABOUT5"
+      # security_group_use_name_prefix = false
+      # security_group_description = "${local.cluster_name} EKS managed node group security group"
+      # security_group_rules = local.node_sg_rules
+      # security_group_tags = local.additional_tags
 
       # A list of security group IDs to associate
-      # vpc_security_group_ids  = [aws_security_group.additional.id]
+      vpc_security_group_ids  = [aws_security_group.additional_node.id]
 
       tags = merge(local.additional_tags, local.tags_nodegroup)
     }
@@ -254,6 +223,35 @@ module "eks" {
   # self_managed_node_groups = {
   #   self_managed_secondary = local.self_managed_secondary
   # }
+}
+
+resource "aws_security_group" "additional_node" {
+  name = "${local.cluster_name}-allow-ssh-to-node"
+  description = "Allow SSH to EKS nodes"
+  vpc_id = local.vpc_id
+
+  ingress {
+    description = "Allow SSH"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/installation/
+  # Todo: See if this gets automatically added by managed node group module
+  ingress {
+    description = "LBC"
+    from_port = 9443
+    to_port = 9443
+    protocol = "tcp"
+    security_groups = [module.eks.cluster_primary_security_group_id]
+  }
+
+  # https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
+  tags = {
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+  }
 }
 
 # KMS key for secret envelope encryption
@@ -319,7 +317,7 @@ module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "${local.cluster_name}-VPC-CNI-IRSA"
+  role_name_prefix      = "${module.eks.cluster_name}-VPC-CNI-IRSA"
   attach_vpc_cni_policy = true
   vpc_cni_enable_ipv6   = true
 
