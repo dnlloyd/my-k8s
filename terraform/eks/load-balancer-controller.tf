@@ -1,14 +1,3 @@
-# Guides
-# 1. https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/installation/
-# 2. https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
-# 3. https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
-
-# Todo: automate all of this
-# Deployments
-# 1. cert manager: kubectl apply -f cert-manager-v1_5_4.yaml
-# 2. load balancer controller: kubectl apply -f lbc-v2_4_5-full.yaml
-# 3. ingress class: kubectl apply -f ingclass-v2_4_5.yaml
-
 resource "aws_ec2_tag" "k8s_subnet_tags_for_lbc_1" {
   for_each    = toset(local.subnet_ids)
   resource_id = each.value
@@ -48,4 +37,26 @@ resource "kubernetes_service_account" "load_balancer_controller" {
       "eks.amazonaws.com/role-arn" = module.load_balancer_controller_irsa.iam_role_arn
     }
   }
+}
+
+data "kubectl_file_documents" "load_balancer_controller" {
+  content = file("${path.module}/../../deploy/cluster-services/aws-load-balancer-controller/lbc-v2_4_5-full.yaml")
+}
+
+resource "kubectl_manifest" "load_balancer_controller" {
+  depends_on = [kubectl_manifest.cert_manager]
+  
+  for_each  = data.kubectl_file_documents.load_balancer_controller.manifests
+  yaml_body = each.value
+}
+
+data "kubectl_file_documents" "ingclass" {
+  content = file("${path.module}/../../deploy/cluster-services/aws-load-balancer-controller/ingclass-v2_4_5.yaml")
+}
+
+resource "kubectl_manifest" "ingclass" {
+  depends_on = [kubectl_manifest.load_balancer_controller]
+
+  for_each  = data.kubectl_file_documents.ingclass.manifests
+  yaml_body = each.value
 }
