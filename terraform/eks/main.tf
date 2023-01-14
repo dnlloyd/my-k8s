@@ -41,7 +41,7 @@ module "eks" {
   vpc_id = local.vpc_id
   subnet_ids = local.subnet_ids
 
-  create_cni_ipv6_iam_policy = true
+  # create_cni_ipv6_iam_policy = true
 
   cluster_addons = {
     coredns = {
@@ -50,18 +50,17 @@ module "eks" {
     kube-proxy = {
       most_recent = true
     }
-    # Todo: Currently not working
-    # vpc-cni = {
-    #   most_recent = true
-    #   service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-    #   configuration_values = jsonencode({
-    #     env = {
-    #       # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-    #       ENABLE_PREFIX_DELEGATION = "true"
-    #       WARM_PREFIX_TARGET       = "1"
-    #     }
-    #   })
-    # }
+    vpc-cni = {
+      most_recent = true
+      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+      configuration_values = jsonencode({
+        env = {
+          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
+        }
+      })
+    }
   }
 
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -313,13 +312,14 @@ resource "kubernetes_namespace" "external-secrets" {
   }
 }
 
+# https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
   role_name_prefix      = "${module.eks.cluster_name}-VPC-CNI-IRSA"
   attach_vpc_cni_policy = true
-  vpc_cni_enable_ipv6   = true
+  vpc_cni_enable_ipv4   = true
 
   oidc_providers = {
     main = {
