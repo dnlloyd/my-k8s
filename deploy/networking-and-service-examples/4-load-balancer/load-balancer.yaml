@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-skp
+  name: web-skp-np
+  namespace: dev
 spec:
   ports:
-    - port: 8080
-      targetPort: 80
+    - port: 80
       protocol: TCP
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: web-skp

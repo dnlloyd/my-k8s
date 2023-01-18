@@ -11,6 +11,8 @@ metadata:
   labels:
     app.kubernetes.io/name: aws-load-balancer-controller
   name: alb
+  # annotations:
+    # ingressclass.kubernetes.io/is-default-class: true
 spec:
   controller: ingress.k8s.aws/alb
   parameters:

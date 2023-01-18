@@ -24,9 +24,18 @@ resource "kubernetes_service_account" "ebs_csi" {
   metadata {
     name = "ebs-csi-controller-sa"
     namespace = "kube-system"
+    
     annotations = {
       "eks.amazonaws.com/role-arn" = module.irsa_ebs_csi.iam_role_arn
     }
+
+    labels = {
+      "app.kubernetes.io/component" = "csi-driver"
+      "app.kubernetes.io/managed-by" = "EKS"
+      "app.kubernetes.io/name" = "aws-ebs-csi-driver"
+      "app.kubernetes.io/version" = "1.13.0"
+    }
+
   }
 }
 

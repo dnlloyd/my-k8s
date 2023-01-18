@@ -5,3 +5,4 @@ RUN apt update && apt install -y \
   netcat \
   traceroute \
   dnsutils \
+  iputils-ping \

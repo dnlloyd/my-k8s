@@ -148,7 +148,7 @@ module "eks" {
       subnet_ids = local.subnet_ids
 
       min_size = 1
-      max_size = 5
+      max_size = 6
       desired_size = 3
 
       instance_types = [local.instance_type]
@@ -225,7 +225,7 @@ module "eks" {
 }
 
 resource "aws_security_group" "additional_node" {
-  name = "${local.cluster_name}-allow-ssh-to-node"
+  name = "${local.cluster_name}-ssh-and-friends"
   description = "Allow SSH to EKS nodes"
   vpc_id = local.vpc_id
 
@@ -237,20 +237,31 @@ resource "aws_security_group" "additional_node" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/installation/
-  # Todo: See if this gets automatically added by managed node group module
+  # For testing, allow all traffic between nodes (ephemeral ports are added by module)
   ingress {
-    description = "LBC"
-    from_port = 9443
-    to_port = 9443
+    description = "All node to node"
+    from_port = 0
+    to_port = 1024
     protocol = "tcp"
-    security_groups = [module.eks.cluster_primary_security_group_id]
+    self = true
   }
 
+  # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/installation/
+  # Todo: See if this gets automatically added by managed node group module
+  # Not needed, gets applied automatically by EKS module
+  # ingress {
+  #   description = "LBC"
+  #   from_port = 9443
+  #   to_port = 9443
+  #   protocol = "tcp"
+  #   security_groups = [module.eks.cluster_primary_security_group_id]
+  # }
+
   # https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
-  tags = {
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
-  }
+  # Not needed, gets applied automatically by EKS module
+  # tags = {
+  #   "kubernetes.io/cluster/${local.cluster_name}" = "owned"
+  # }
 }
 
 # KMS key for secret envelope encryption

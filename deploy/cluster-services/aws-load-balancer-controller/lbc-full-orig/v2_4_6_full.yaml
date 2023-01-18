@@ -559,15 +559,16 @@ spec:
     subresources:
       status: {}
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: aws-load-balancer-controller
-  name: aws-load-balancer-controller
-  namespace: kube-system
----
+# Created via terraform
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   labels:
+#     app.kubernetes.io/component: controller
+#     app.kubernetes.io/name: aws-load-balancer-controller
+#   name: aws-load-balancer-controller
+#   namespace: kube-system
+# ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -810,7 +811,7 @@ spec:
     spec:
       containers:
       - args:
-        - --cluster-name=your-cluster-name
+        - --cluster-name=my-k8s
         - --ingress-class=alb
         image: public.ecr.aws/eks/aws-load-balancer-controller:v2.4.6
         livenessProbe:

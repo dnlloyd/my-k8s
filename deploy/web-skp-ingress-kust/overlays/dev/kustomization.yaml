@@ -7,5 +7,5 @@ bases:
 namespace: dev
 
 patchesStrategicMerge:
-# - ingress.yaml
+- ingress.yaml
 - deployment.yaml
