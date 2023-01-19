@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/blk-foo:latest
+          image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/foo:latest
           env:
             - name: NEW_RELIC_APP_NAME
               value: foo

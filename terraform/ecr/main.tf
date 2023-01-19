@@ -22,3 +22,18 @@ resource "aws_ecr_repository" "flask_auth" {
   name = "flask-auth"
   image_tag_mutability = "MUTABLE"
 }
+
+resource "aws_ecr_repository" "aspnet-core" {
+  name = "aspnet-core"
+  image_tag_mutability = "MUTABLE"
+}
+
+resource "aws_ecr_repository" "foo" {
+  name = "foo"
+  image_tag_mutability = "MUTABLE"
+}
+
+resource "aws_ecr_repository" "bar" {
+  name = "bar"
+  image_tag_mutability = "MUTABLE"
+}
