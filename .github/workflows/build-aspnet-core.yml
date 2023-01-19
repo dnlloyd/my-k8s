@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'docker/aspnetapp/**'
+      - 'docker/aspnet-core/**'
       - '.github/workflows/build-aspnet-core.yml'
 
 jobs:
