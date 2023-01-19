@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: api
+          image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/blk-bar:0.1.0
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Prod

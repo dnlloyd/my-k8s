@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/blk-foo:latest
+          env:
+            - name: NEW_RELIC_APP_NAME
+              value: foo

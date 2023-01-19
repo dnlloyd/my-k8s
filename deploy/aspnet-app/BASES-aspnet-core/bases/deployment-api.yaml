@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: 458891109543.dkr.ecr.us-east-1.amazonaws.com/blk-app-asp-net:0.1.0
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Base
+            - name: ASPNETCORE_URLS
+              value: http://*:8080
+          #   - name: NEW_RELIC_APP_NAME
+          #     value: AspNetCoreBase
+          envFrom:
+            - secretRef:
+                name: vault-api
+          ports:
+            - containerPort: 8080
+          resources: {}
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 2
+            successThreshold: 2
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /Privacy
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 5
+      imagePullSecrets:
+        - name: ghcr
