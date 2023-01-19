@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-web-skp
+  name: app-aspnet-core
   namespace: argocd
 spec:
   destination:
@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: deploy/web-skp-kust/overlays/dev
+    path: deploy/aspnet-app/BASES-aspnet-core/bases
     repoURL: https://github.com/dnlloyd/my-k8s
     targetRevision: master
   syncPolicy:

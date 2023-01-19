@@ -48,7 +48,7 @@ argocd account update-password
 ```
 kubectl config set-context --current --namespace=argocd
 
-kubectl apply -f apps/application-web-skp-dev.yaml
+kubectl apply -f apps/dev/application-web-skp-dev.yaml
 ```
 
 **Verify**
