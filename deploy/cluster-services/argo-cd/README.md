@@ -46,8 +46,6 @@ argocd account update-password
 # 3.Create web-skp Argo CD application and deploy
 
 ```
-kubectl config set-context --current --namespace=argocd
-
 kubectl apply -f apps/dev/application-web-skp-dev.yaml
 ```
 
@@ -62,8 +60,6 @@ kubectl apply -f apps/dev/application-web-skp-dev.yaml
 # 4. Delete the web-skp Argo CD application
 
 ```
-kubectl config set-context --current --namespace=argocd
-
 kubectl delete -f apps/application-web-skp-dev.yaml
 ```
 
