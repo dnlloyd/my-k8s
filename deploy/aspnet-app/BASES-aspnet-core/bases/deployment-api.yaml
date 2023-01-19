@@ -22,9 +22,9 @@ spec:
               value: http://*:8080
           #   - name: NEW_RELIC_APP_NAME
           #     value: AspNetCoreBase
-          envFrom:
-            - secretRef:
-                name: vault-api
+          # envFrom:
+          #   - secretRef:
+          #       name: vault-api
           ports:
             - containerPort: 8080
           resources: {}
