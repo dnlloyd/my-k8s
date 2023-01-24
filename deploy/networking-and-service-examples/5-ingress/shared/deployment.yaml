@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: root
+  namespace: shared
+  labels:
+    app: root
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: root
+  template:
+    metadata:
+      labels:
+        app: root
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: root
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/aspnet-core:0.1.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            null

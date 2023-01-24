@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: root
+  namespace: shared
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: main
+    alb.ingress.kubernetes.io/group.order: '900'
+    external-dns.alpha.kubernetes.io/hostname: www.fhcdan.net
+spec:
+  ingressClassName: alb
+  defaultBackend:
+    service:
+      name: root-np
+      port:
+        number: 80

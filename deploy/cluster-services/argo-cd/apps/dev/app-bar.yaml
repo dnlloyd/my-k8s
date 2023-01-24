@@ -5,11 +5,11 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: foo
+    namespace: bar
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: deploy/aspnet-app/L2-deployments/dev/foo
+    path: deploy/aspnet-app/L2-deployments/dev/bar
     repoURL: https://github.com/dnlloyd/my-k8s
     targetRevision: master
   syncPolicy:

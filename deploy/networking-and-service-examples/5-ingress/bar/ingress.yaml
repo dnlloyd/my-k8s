@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bar
+  namespace: bar
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: main
+    # The smaller the order, the rule will be evaluated first. All Ingresses without explicit order setting get order value as 0
+    alb.ingress.kubernetes.io/group.order: '100'
+    external-dns.alpha.kubernetes.io/hostname: bar.fhcdan.net
+spec:
+  ingressClassName: alb
+  rules:
+    - host: bar.fhcdan.net
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: bar-np
+              port:
+                number: 80

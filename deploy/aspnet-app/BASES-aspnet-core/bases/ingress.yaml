@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main
+  namespace: ingress-common
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: dev.fhcdan.net
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: main
+spec:
+  ingressClassName: alb
+  # rules:
+  #   - http:
+  #       paths:
+  #       - path: /
+  #         pathType: Prefix
+  #         backend:
+  #           service:
+  #             name: api
+  #             port:
+  #               number: 80

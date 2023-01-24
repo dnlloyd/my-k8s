@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: dev
 
 resources:
-  - service-api-lb.yaml
+  - service-api-np.yaml
+  - ingress.yaml
   - deployment-api.yaml

@@ -299,6 +299,22 @@ resource "kubernetes_namespace" "prod" {
   }
 }
 
+resource "kubernetes_namespace" "foo" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "foo"
+  }
+}
+
+resource "kubernetes_namespace" "bar" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "bar"
+  }
+}
+
 resource "kubernetes_namespace" "argocd" {
   depends_on = [module.eks]
 
@@ -320,6 +336,22 @@ resource "kubernetes_namespace" "external-secrets" {
 
   metadata {
     name = "external-secrets"
+  }
+}
+
+resource "kubernetes_namespace" "ingress-shared" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "ingress-shared"
+  }
+}
+
+resource "kubernetes_namespace" "shared" {
+  depends_on = [module.eks]
+
+  metadata {
+    name = "shared"
   }
 }
 

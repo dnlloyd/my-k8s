@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+  namespace: foo
+  labels:
+    app: foo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: foo
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/foo:0.1.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /Privacy
+              port: http
+          resources:
+            null

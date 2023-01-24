@@ -7,4 +7,6 @@ bases:
 - ../../BASES-aspnet-core/bases
 
 patchesStrategicMerge:
+  - service-api-np.yaml
+  - ingress.yaml
   - deployment-api.yaml

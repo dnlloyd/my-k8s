@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-skp
-  namespace: dev
+  name: bar
+  namespace: bar
   labels:
-    app: web-skp
+    app: bar
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web-skp
+      app: bar
   template:
     metadata:
       labels:
-        app: web-skp
+        app: bar
     spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: web-skp
-          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/web-skp:0.2.0"
+        - name: bar
+          image: "458891109543.dkr.ecr.us-east-1.amazonaws.com/bar:0.1.0"
           imagePullPolicy: Always
           ports:
             - name: http
@@ -31,7 +31,7 @@ spec:
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /Privacy
               port: http
           resources:
             null
