@@ -20,13 +20,15 @@
 * ~~Secrets~~
   * ~~SOPS ~~
 * Ingress
+  * ~~ALB to NodePort~~
+  * NGINX
 * Certificate management
 * ~~HPA~~
 * Better metrics than metrics server
   * And automate with cluster start
 * Keda
 * EKS Cluster autoscaling
-* Config
+* ~~Config~~
   * ~~kubectl apply~~
   * ~~Helm~~
   * ~~Kustomize~~
@@ -46,4 +48,4 @@
   * EKS
 * Canary deployments
   * https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#canary-deployments
-* Persistent storage
+* ~~Persistent storage~~
