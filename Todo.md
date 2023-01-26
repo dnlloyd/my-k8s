@@ -49,3 +49,4 @@
 * Canary deployments
   * https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/#canary-deployments
 * ~~Persistent storage~~
+* Service mesh via Istio
