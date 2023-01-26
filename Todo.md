@@ -18,7 +18,7 @@
 * ~~External DNS~~
   * ~~Auto deploy via TF Kubernetes provider~~
 * ~~Secrets~~
-  * ~~SOPS ~~
+  * ~~SOPS~~
 * Ingress
   * ~~ALB to NodePort~~
   * NGINX
