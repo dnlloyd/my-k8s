@@ -1,7 +1,5 @@
 # Install
 
-NOT CURRENTLY WORKING!!
-
 Cert Manager, AWS Load Balancer Controller, and Ingress Class are all currently being deployed by Terraform
 
 # Guides
