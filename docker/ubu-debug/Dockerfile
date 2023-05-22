@@ -1,5 +1,7 @@
 FROM ubuntu
 
+RUN apt update && apt install -y curl wget gnupg unzip
+
 # Vault
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | \
   sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -12,22 +14,18 @@ RUN echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] http
 #   gpg --dearmor | \
 #   sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
 
-RUN apt update && apt install -y \
-  curl \
+RUN apt install -y \
   netcat \
   traceroute \
   dnsutils \
   iputils-ping \
-  wget \
   vim \
-  unzip \
   tree \
   net-tools \
   iproute2 \
   vault \
   openssh-client \
   openssl \
-  gnupg \
   software-properties-common \
   terraform \
   sqlite3
