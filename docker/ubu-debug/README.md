@@ -17,3 +17,4 @@ ss
 netstat
 man pages
 kustomize
+confluent
