@@ -22,7 +22,8 @@ RUN apt update && apt install -y \
   openssl \
   software-properties-common \
   terraform \
-  sqlite3
+  sqlite3 \
+  postgresql-client
 
 # Kustomize
 RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash

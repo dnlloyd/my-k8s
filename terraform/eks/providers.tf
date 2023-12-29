@@ -4,12 +4,12 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.47"
+      version = ">= 5.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "2.16"
-    }
+    # kubernetes = {
+    #   source  = "hashicorp/kubernetes"
+    #   version = "2.16"
+    # }
     # argocd = {
     #   source = "oboukili/argocd"
     #   version = "0.4.7"
@@ -22,14 +22,20 @@ terraform {
 }
 
 provider "kubernetes" {
-  host = module.eks.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-  token = data.aws_eks_cluster_auth.eks.token
+  host                   = module.tools_test_eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.tools_test_eks.cluster_certificate_authority_data)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    # This requires the awscli to be installed locally where Terraform is executed
+    args = ["eks", "get-token", "--cluster-name", module.tools_test_eks.cluster_name]
+  }
 }
 
 provider "kubectl" {
-  host                   = module.eks.cluster_endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  host                   = module.my_eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.my_eks.cluster_certificate_authority_data)
   token                  = data.aws_eks_cluster_auth.eks.token
   load_config_file       = false
 }
@@ -44,8 +50,8 @@ provider "kubectl" {
 
 # provider "helm" {
 #   kubernetes {
-#     host = module.eks.cluster_endpoint
-#     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+#     host = module.my_eks.cluster_endpoint
+#     cluster_ca_certificate = base64decode(module.my_eks.cluster_certificate_authority_data)
 #     token = data.aws_eks_cluster_auth.eks.token
 #   }
 # }

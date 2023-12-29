@@ -1,0 +1,20 @@
+---
+# Source: terraform-cloud-operator/templates/service.yaml
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    control-plane: fhc-dan-controller-manager
+  name: fhc-dan-controller-manager-metrics-service
+  namespace: tfc-operator-system
+spec:
+  ports:
+  - name: https
+    port: 8443
+    protocol: TCP
+    targetPort: https
+  selector:
+    control-plane: fhc-dan-controller-manager

@@ -31,7 +31,7 @@ module "irsa_external_dns" {
 
   oidc_providers = {
     main = {
-      provider_arn = module.my_eks.oidc_provider_arn
+      provider_arn = module.eks.oidc_provider_arn
       namespace_service_accounts = ["kube-system:${var.external_dns_sa_name}"]
     }
   }
@@ -52,7 +52,7 @@ resource "kubernetes_service_account" "external_dns" {
 }
 
 resource "kubernetes_cluster_role" "external_dns" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
   
   metadata {
     name = var.external_dns_sa_name

@@ -1,0 +1,93 @@
+---
+# Source: terraform-cloud-operator/templates/deployment.yaml
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fhc-dan-terraform-cloud-operator
+  namespace: tfc-operator-system
+  labels:
+    helm.sh/chart: terraform-cloud-operator-2.1.0
+    app.kubernetes.io/name: terraform-cloud-operator
+    app.kubernetes.io/instance: fhc-dan
+    app.kubernetes.io/version: "2.1.0"
+    app.kubernetes.io/managed-by: Helm
+    control-plane: fhc-dan-controller-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: terraform-cloud-operator
+      app.kubernetes.io/instance: fhc-dan
+      control-plane: fhc-dan-controller-manager
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: terraform-cloud-operator
+        app.kubernetes.io/instance: fhc-dan
+        control-plane: fhc-dan-controller-manager
+    spec:
+      containers:
+        - name: manager
+          image: hashicorp/terraform-cloud-operator:2.1.0
+          imagePullPolicy: IfNotPresent
+          args:
+          - --sync-period=5m
+          - --agent-pool-workers=1
+          - --module-workers=0
+          - --workspace-workers=0
+          command:
+          - /manager
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+        - name: kube-rbac-proxy
+          image: quay.io/brancz/kube-rbac-proxy:v0.14.4
+          imagePullPolicy: IfNotPresent
+          args:
+          - --secure-listen-address=0.0.0.0:8443
+          - --upstream=http://127.0.0.1:8080/
+          - --logtostderr=true
+          - --v=0
+          ports:
+          - containerPort: 8443
+            name: https
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+      serviceAccountName: fhc-dan-controller-manager
+      securityContext:
+        runAsNonRoot: true
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - configMap:
+          name: fhc-dan-manager-config
+        name: manager-config

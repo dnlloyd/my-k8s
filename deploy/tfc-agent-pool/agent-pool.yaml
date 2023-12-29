@@ -1,0 +1,20 @@
+apiVersion: app.terraform.io/v1alpha2
+kind: AgentPool
+metadata:
+  name: bku-test
+  namespace: tfc-operator-system
+spec:
+  organization: fhc-dan
+  token:
+    secretKeyRef:
+      name: terraformrc
+      key: token
+  name: bku-test
+  agentTokens:
+    - name: bku-test
+  agentDeployment:
+    replicas: 1
+    spec:
+      containers:
+        - name: tfc-agent
+          image: "hashicorp/tfc-agent"

@@ -1,8 +1,7 @@
 locals {
-  cluster_version = "1.28"
+  cluster_version = "1.24"
   cluster_name = "my-k8s"
   vpc_id = "vpc-065b33a8baa73e2a3"
-
   instance_type = "m5.2xlarge"
   ec2_key_pair_name = "fh-sandbox"
   disk_size = 40
@@ -22,19 +21,17 @@ locals {
     "k8s.io/cluster-autoscaler/enabled" = "true"
     "k8s.io/cluster-autoscaler/${local.cluster_name}" = "owned"
   }
-
-  rt53_zone_name = "fhcdan.net"
 }
 
-# data "aws_eks_cluster_auth" "eks" {
-#   name = module.my_eks.cluster_name
-# }
+data "aws_eks_cluster_auth" "eks" {
+  name = module.eks.cluster_name
+}
 
-module "my_eks" {
+module "eks" {
   create = true
 
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.21.0"
+  version = "19.5.1"
 
   cluster_name = local.cluster_name
   cluster_version = local.cluster_version
@@ -54,8 +51,7 @@ module "my_eks" {
       most_recent = true
     }
     vpc-cni = {
-      most_recent              = true
-      before_compute           = true
+      most_recent = true
       service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
       configuration_values = jsonencode({
         env = {
@@ -118,7 +114,7 @@ module "my_eks" {
 
   eks_managed_node_groups = {
     default_node_group = {
-      name = "${local.cluster_name}-managed-node"
+      name = "${local.cluster_name}-managed"
 
       ############### Launch template ###############
       # AMI comes from: https://github.com/awslabs/amazon-eks-ami
@@ -136,7 +132,7 @@ module "my_eks" {
           device_name = "/dev/xvda"
 
           ebs = {
-            volume_size = local.disk_size
+            volume_size = local.disk_size # Todo: Which will win, this or disk_size
             volume_type = "gp3"
             encrypted   = true
           }
@@ -152,8 +148,8 @@ module "my_eks" {
       subnet_ids = local.subnet_ids
 
       min_size = 1
-      max_size = 4
-      desired_size = 2
+      max_size = 6
+      desired_size = 3
 
       instance_types = [local.instance_type]
       capacity_type = "ON_DEMAND"
@@ -190,10 +186,10 @@ module "my_eks" {
       # EOT
 
       # 1.24 or later
-      # pre_bootstrap_user_data = <<-EOT
-      # export CONTAINER_RUNTIME="containerd"
-      # export USE_MAX_PODS=false
-      # EOT
+      pre_bootstrap_user_data = <<-EOT
+      export CONTAINER_RUNTIME="containerd"
+      export USE_MAX_PODS=false
+      EOT
 
       update_config = {
         max_unavailable_percentage = 75 # or set `max_unavailable`
@@ -258,7 +254,7 @@ resource "aws_security_group" "additional_node" {
   #   from_port = 9443
   #   to_port = 9443
   #   protocol = "tcp"
-  #   security_groups = [module.my_eks.cluster_primary_security_group_id]
+  #   security_groups = [module.eks.cluster_primary_security_group_id]
   # }
 
   # https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
@@ -280,7 +276,7 @@ resource "aws_kms_key" "eks" {
 }
 
 resource "kubernetes_namespace" "prometheus" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "prometheus"
@@ -288,7 +284,7 @@ resource "kubernetes_namespace" "prometheus" {
 }
 
 resource "kubernetes_namespace" "dev" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "dev"
@@ -296,7 +292,7 @@ resource "kubernetes_namespace" "dev" {
 }
 
 resource "kubernetes_namespace" "prod" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "prod"
@@ -304,7 +300,7 @@ resource "kubernetes_namespace" "prod" {
 }
 
 resource "kubernetes_namespace" "foo" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "foo"
@@ -312,7 +308,7 @@ resource "kubernetes_namespace" "foo" {
 }
 
 resource "kubernetes_namespace" "bar" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "bar"
@@ -320,7 +316,7 @@ resource "kubernetes_namespace" "bar" {
 }
 
 resource "kubernetes_namespace" "argocd" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "argocd"
@@ -328,7 +324,7 @@ resource "kubernetes_namespace" "argocd" {
 }
 
 resource "kubernetes_namespace" "vault" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "vault"
@@ -336,7 +332,7 @@ resource "kubernetes_namespace" "vault" {
 }
 
 resource "kubernetes_namespace" "external-secrets" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "external-secrets"
@@ -344,7 +340,7 @@ resource "kubernetes_namespace" "external-secrets" {
 }
 
 resource "kubernetes_namespace" "ingress-shared" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "ingress-shared"
@@ -352,7 +348,7 @@ resource "kubernetes_namespace" "ingress-shared" {
 }
 
 resource "kubernetes_namespace" "shared" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "shared"
@@ -364,13 +360,13 @@ module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "${module.my_eks.cluster_name}-VPC-CNI-IRSA"
+  role_name_prefix      = "${module.eks.cluster_name}-VPC-CNI-IRSA"
   attach_vpc_cni_policy = true
   vpc_cni_enable_ipv4   = true
 
   oidc_providers = {
     main = {
-      provider_arn               = module.my_eks.oidc_provider_arn
+      provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["kube-system:aws-node"]
     }
   }

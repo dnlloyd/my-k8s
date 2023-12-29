@@ -1,5 +1,5 @@
 # resource "kubernetes_manifest" "customresourcedefinition_certificaterequests_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apiextensions.k8s.io/v1"
@@ -997,7 +997,7 @@
 # }
 
 # resource "kubernetes_manifest" "customresourcedefinition_certificates_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apiextensions.k8s.io/v1"
@@ -2828,7 +2828,7 @@
 # }
 
 # resource "kubernetes_manifest" "customresourcedefinition_challenges_acme_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apiextensions.k8s.io/v1"
@@ -8259,7 +8259,7 @@
 # }
 
 # resource "kubernetes_manifest" "customresourcedefinition_clusterissuers_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apiextensions.k8s.io/v1"
@@ -14885,7 +14885,7 @@
 # }
 
 # resource "kubernetes_manifest" "customresourcedefinition_issuers_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apiextensions.k8s.io/v1"
@@ -21511,7 +21511,7 @@
 # }
 
 # resource "kubernetes_manifest" "customresourcedefinition_orders_acme_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apiextensions.k8s.io/v1"
@@ -22434,7 +22434,7 @@
 # }
 
 # resource "kubernetes_manifest" "namespace_cert_manager" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "v1"
@@ -22446,7 +22446,7 @@
 # }
 
 # resource "kubernetes_manifest" "serviceaccount_cert_manager_cert_manager_cainjector" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "v1"
@@ -22467,7 +22467,7 @@
 # }
 
 # resource "kubernetes_manifest" "serviceaccount_cert_manager_cert_manager" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "v1"
@@ -22488,7 +22488,7 @@
 # }
 
 # resource "kubernetes_manifest" "serviceaccount_cert_manager_cert_manager_webhook" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "v1"
@@ -22509,7 +22509,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_cainjector" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -22627,7 +22627,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_issuers" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -22701,7 +22701,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_clusterissuers" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -22775,7 +22775,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_certificates" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -22881,7 +22881,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_orders" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -22990,7 +22990,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_challenges" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23158,7 +23158,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_ingress_shim" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23271,7 +23271,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_view" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23324,7 +23324,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_edit" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23380,7 +23380,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_approve_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23416,7 +23416,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_controller_certificatesigningrequests" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23488,7 +23488,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrole_cert_manager_webhook_subjectaccessreviews" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23520,7 +23520,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_cainjector" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23551,7 +23551,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_issuers" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23582,7 +23582,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_clusterissuers" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23613,7 +23613,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_certificates" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23644,7 +23644,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_orders" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23675,7 +23675,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_challenges" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23706,7 +23706,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_ingress_shim" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23737,7 +23737,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_approve_cert_manager_io" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23768,7 +23768,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_controller_certificatesigningrequests" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23799,7 +23799,7 @@
 # }
 
 # resource "kubernetes_manifest" "clusterrolebinding_cert_manager_webhook_subjectaccessreviews" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23831,7 +23831,7 @@
 # }
 
 # resource "kubernetes_manifest" "role_kube_system_cert_manager_cainjector_leaderelection" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23909,7 +23909,7 @@
 # }
 
 # resource "kubernetes_manifest" "role_kube_system_cert_manager_leaderelection" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -23985,7 +23985,7 @@
 # }
 
 # resource "kubernetes_manifest" "role_cert_manager_cert_manager_webhook_dynamic_serving" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -24035,7 +24035,7 @@
 # }
 
 # resource "kubernetes_manifest" "rolebinding_kube_system_cert_manager_cainjector_leaderelection" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -24067,7 +24067,7 @@
 # }
 
 # resource "kubernetes_manifest" "rolebinding_kube_system_cert_manager_leaderelection" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -24100,7 +24100,7 @@
 # }
 
 # resource "kubernetes_manifest" "rolebinding_cert_manager_cert_manager_webhook_dynamic_serving" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "rbac.authorization.k8s.io/v1"
@@ -24133,7 +24133,7 @@
 # }
 
 # resource "kubernetes_manifest" "service_cert_manager_cert_manager" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "v1"
@@ -24169,7 +24169,7 @@
 # }
 
 # resource "kubernetes_manifest" "service_cert_manager_cert_manager_webhook" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "v1"
@@ -24205,7 +24205,7 @@
 # }
 
 # resource "kubernetes_manifest" "deployment_cert_manager_cert_manager_cainjector" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apps/v1"
@@ -24274,7 +24274,7 @@
 # }
 
 # resource "kubernetes_manifest" "deployment_cert_manager_cert_manager" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apps/v1"
@@ -24355,7 +24355,7 @@
 # }
 
 # resource "kubernetes_manifest" "deployment_cert_manager_cert_manager_webhook" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "apps/v1"
@@ -24458,7 +24458,7 @@
 # }
 
 # resource "kubernetes_manifest" "mutatingwebhookconfiguration_cert_manager_webhook" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "admissionregistration.k8s.io/v1"
@@ -24518,7 +24518,7 @@
 # }
 
 # resource "kubernetes_manifest" "validatingwebhookconfiguration_cert_manager_webhook" {
-#   depends_on = [module.my_eks]
+#   depends_on = [module.eks]
 
 #   manifest = {
 #     "apiVersion" = "admissionregistration.k8s.io/v1"

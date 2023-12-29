@@ -1,5 +1,5 @@
 resource "kubernetes_namespace" "cert_manager" {
-  depends_on = [module.my_eks]
+  depends_on = [module.eks]
 
   metadata {
     name = "cert-manager"
